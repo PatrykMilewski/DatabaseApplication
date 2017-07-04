@@ -12,9 +12,9 @@ import java.util.logging.Logger;
 public class Main extends Application {
     
     private static Logger log = Logger.getLogger(Main.class.getCanonicalName());
-    private final URL fxmlUrl = getClass().getResource("/fxml/mainWindow.fxml");
+    private static boolean debug = false;
     
-    protected static boolean debug = false;
+    private final URL fxmlUrl = getClass().getResource("/fxml/mainWindow.fxml");
     
     @Override
     public void start(Stage primaryStage) throws Exception {

@@ -1,21 +1,24 @@
 package com.application.gui.controllers;
 
-import com.application.gui.elements.Contextable;
+import com.application.database.connection.MySQLConnection;
+import com.application.gui.abstracts.Contextable;
+import com.application.gui.abstracts.InfoType;
 import com.application.gui.elements.DataTableContextMenu;
 import com.application.gui.elements.FiltersContextMenu;
+import com.application.gui.windows.LoginWindow;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.*;
+
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class MainWindowController {
     
-    private Contextable dataTableContextMenu, filtersContextMenu;
+    private static Logger log = Logger.getLogger(MainWindowController.class.getCanonicalName());
     
-    @FXML
-    private Pane mainPane;
+    private LoginWindow loginWindow;
+    private MySQLConnection databaseConnection;
+    private Contextable dataTableContextMenu, filtersContextMenu;
     
     @FXML
     private MenuBar menuBar;
@@ -33,9 +36,27 @@ public class MainWindowController {
     private ListView filtersList;
     
     @FXML
+    private Label infoLabel;
+    
+    @FXML
     public void initialize() {
         dataTableContextMenu = new DataTableContextMenu();
         filtersContextMenu = new FiltersContextMenu();
+    }
+    
+    @FXML
+    public void connectToDatabase() {
+        try {
+            loginWindow = new LoginWindow();
+        }
+        catch (IOException e) {
+        
+        }
+    }
+    
+    @FXML
+    public void disconnectFromDatabase() {
+    
     }
     
     @FXML
@@ -48,4 +69,7 @@ public class MainWindowController {
         filtersList.setContextMenu(filtersContextMenu.getContextMenu());
     }
     
+    private void addInfo(String message, InfoType type) {
+    
+    }
 }

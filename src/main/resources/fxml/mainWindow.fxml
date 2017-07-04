@@ -4,21 +4,27 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="441.0" prefWidth="677.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.MainWindowController">
+<BorderPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="441.0" prefWidth="677.0" stylesheets="@../css/mainWindowStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.MainWindowController">
     <top>
-        <MenuBar fx:id="menuBar" prefHeight="52.0" prefWidth="754.0" stylesheets="@../css/styles.css" BorderPane.alignment="CENTER">
+        <MenuBar fx:id="menuBar" prefHeight="52.0" prefWidth="754.0" stylesheets="@../css/mainWindowStyles.css" BorderPane.alignment="CENTER">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Plik">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Close" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
+            <Menu mnemonicParsing="false" text="Połączenie">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#connectToDatabase" text="Połącz z bazą danych" />
+                  <MenuItem mnemonicParsing="false" onAction="#disconnectFromDatabase" text="Rozłącz z bazą danych" />
+               </items>
+            </Menu>
+                <Menu mnemonicParsing="false" text="Edytuj">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Delete" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="false" text="Pomoc">
                     <items>
                         <MenuItem mnemonicParsing="false" text="About" />
                     </items>
@@ -27,15 +33,22 @@
         </MenuBar>
     </top>
     <left>
-        <ScrollPane fx:id="filtersPane" fitToHeight="true" fitToWidth="true" prefHeight="527.0" prefWidth="188.0" styleClass="filters-pane" stylesheets="@../css/styles.css" BorderPane.alignment="CENTER">
+        <ScrollPane fx:id="filtersPane" fitToHeight="true" fitToWidth="true" prefHeight="527.0" prefWidth="188.0" styleClass="filters-pane" stylesheets="@../css/mainWindowStyles.css" BorderPane.alignment="CENTER">
          <content>
             <ListView fx:id="filtersList" onContextMenuRequested="#showFiltersContextMenu" prefHeight="200.0" prefWidth="200.0" />
          </content></ScrollPane>
     </left>
     <center>
-        <ScrollPane id="data-pane" fx:id="dataPane" fitToHeight="true" fitToWidth="true" prefHeight="494.0" prefWidth="557.0" stylesheets="@../css/styles.css" BorderPane.alignment="CENTER">
+        <ScrollPane id="data-pane" fx:id="dataPane" fitToHeight="true" fitToWidth="true" prefHeight="373.0" prefWidth="489.0" stylesheets="@../css/mainWindowStyles.css" BorderPane.alignment="CENTER">
          <content>
-            <TableView fx:id="dataTable" onContextMenuRequested="#showDataTableContextMenu" prefHeight="200.0" prefWidth="200.0" />
+            <TableView fx:id="dataTable" onContextMenuRequested="#showDataTableContextMenu" prefHeight="377.0" prefWidth="469.0" />
          </content></ScrollPane>
     </center>
+   <bottom>
+      <AnchorPane prefHeight="23.0" prefWidth="677.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="infoLabel" layoutX="6.0" layoutY="-1.0" prefHeight="25.0" prefWidth="665.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
 </BorderPane>
