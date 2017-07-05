@@ -1,4 +1,4 @@
-package com.application.gui.abstracts;
+package com.application.gui.abstracts.enums;
 
 public enum InfoType {
     INFO,

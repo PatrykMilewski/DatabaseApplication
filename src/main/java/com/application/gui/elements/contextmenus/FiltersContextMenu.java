@@ -1,6 +1,5 @@
-package com.application.gui.elements;
+package com.application.gui.elements.contextmenus;
 
-import com.application.gui.abstracts.CustomContextMenu;
 import javafx.scene.control.MenuItem;
 
 public class FiltersContextMenu extends CustomContextMenu {

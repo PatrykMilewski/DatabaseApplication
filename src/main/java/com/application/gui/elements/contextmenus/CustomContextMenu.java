@@ -1,6 +1,5 @@
-package com.application.gui.elements;
+package com.application.gui.elements.contextmenus;
 
-import com.application.gui.abstracts.Contextable;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 

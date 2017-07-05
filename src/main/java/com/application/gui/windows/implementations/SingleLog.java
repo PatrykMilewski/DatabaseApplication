@@ -1,6 +1,6 @@
 package com.application.gui.windows.implementations;
 
-import com.application.gui.abstracts.InfoType;
+import com.application.gui.abstracts.enums.InfoType;
 
 public class SingleLog {
     String text;

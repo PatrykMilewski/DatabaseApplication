@@ -1,10 +1,10 @@
 package com.application.gui.controllers;
 
 import com.application.database.connection.MySQLConnection;
-import com.application.gui.abstracts.Contextable;
-import com.application.gui.abstracts.InfoType;
-import com.application.gui.elements.DataTableContextMenu;
-import com.application.gui.elements.FiltersContextMenu;
+import com.application.gui.elements.contextmenus.Contextable;
+import com.application.gui.abstracts.enums.InfoType;
+import com.application.gui.elements.contextmenus.DataTableContextMenu;
+import com.application.gui.elements.contextmenus.FiltersContextMenu;
 import com.application.gui.windows.LoginWindow;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class MainWindowController {
+public class MainWindowController extends Controller {
     
     private static Logger log = Logger.getLogger(MainWindowController.class.getCanonicalName());
     
@@ -40,6 +40,7 @@ public class MainWindowController {
     
     @FXML
     public void initialize() {
+        resultsReady = true;
         dataTableContextMenu = new DataTableContextMenu();
         filtersContextMenu = new FiltersContextMenu();
     }
@@ -48,6 +49,7 @@ public class MainWindowController {
     public void connectToDatabase() {
         try {
             loginWindow = new LoginWindow();
+            
         }
         catch (IOException e) {
         
@@ -71,5 +73,10 @@ public class MainWindowController {
     
     private void addInfo(String message, InfoType type) {
     
+    }
+    
+    @Override
+    Object getResult() {
+        return null;
     }
 }
