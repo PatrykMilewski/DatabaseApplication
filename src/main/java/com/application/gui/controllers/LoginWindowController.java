@@ -1,6 +1,8 @@
 package com.application.gui.controllers;
 
 import com.application.database.connection.MySQLConnection;
+import com.application.gui.abstracts.factories.LoggerFactory;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -12,16 +14,16 @@ import java.util.logging.Logger;
 
 public class LoginWindowController extends Controller {
     
-    private static Logger log = Logger.getLogger(LoginWindowController.class.getCanonicalName());
+    private static Logger log = LoggerFactory.getLogger(LoginWindowController.class.getCanonicalName());
     
     private MySQLConnection databaseConnection;
-    private String basename, username, password;
-    private Stage loginStage;
+    private Stage stage;
+    private String baseAndServerName = "localhost:testowa", username = "test", password = "982563";
     
     private boolean loginCancelled = false;
     
     @FXML
-    private TextField baseNameField;
+    private TextField baseAndServerNameField;
     
     @FXML
     private TextField userNameField;
@@ -32,14 +34,13 @@ public class LoginWindowController extends Controller {
     @FXML
     private Label errorLabel;
     
-    LoginWindowController(Stage loginStage) {
-        this.loginStage = loginStage;
+    public LoginWindowController() {
         resultsReady = false;
     }
     
     @FXML
-    public void baseNameEntered() {
-        basename = baseNameField.getText();
+    public void baseAndHostNameEntered() {
+        baseAndServerName = baseAndServerNameField.getText();
     }
     
     @FXML
@@ -53,10 +54,11 @@ public class LoginWindowController extends Controller {
     }
     
     @FXML
-    public void login() {
-        if (basename.length() != 0 && username.length() != 0 && password.length() != 0) {
+    synchronized public void login() {
+        if (baseAndServerName.length() != 0 && username.length() != 0 && password.length() != 0) {
+            String hostAndBase[] = baseAndServerName.split(":");
             resultsReady = false;
-            databaseConnection = new MySQLConnection(username, password, basename);
+            databaseConnection = new MySQLConnection(username, password, hostAndBase[0], hostAndBase[1]);
             try {
                 databaseConnection.connectToDatabase();
                 resultsReady = true;
@@ -65,14 +67,19 @@ public class LoginWindowController extends Controller {
                 errorLabel.setText("Error code: "+ translateLoginError(e.getErrorCode()));
             }
         }
-        if (resultsReady)
+        
+        if (resultsReady) {
             notifyAll();
+            exit();
+        }
     }
     
     @FXML
-    public void cancel() {
+    synchronized public void cancel() {
         loginCancelled = true;
-        loginStage.close();
+        resultsReady = true;
+        notifyAll();
+        stage.close();
     }
     
     private String translateLoginError(int code) {
@@ -81,9 +88,13 @@ public class LoginWindowController extends Controller {
         }
     }
     
+    void exit() {
+        stage.close();
+    }
+    
     @Override
-    Object getResult() {
-        while (!resultsReady) {
+    synchronized Object getResult() {
+        while (!resultsReady && !loginCancelled) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -91,9 +102,10 @@ public class LoginWindowController extends Controller {
             }
         }
         
-        if (loginCancelled)
-            return null;
-        else
-            return databaseConnection;
+        return (resultsReady && !loginCancelled) ? databaseConnection.getDbcon() : null;
+    }
+    
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

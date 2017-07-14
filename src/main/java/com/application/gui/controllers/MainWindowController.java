@@ -1,28 +1,39 @@
 package com.application.gui.controllers;
 
-import com.application.database.connection.MySQLConnection;
+import com.application.gui.abstracts.exceptions.FailedToConnectToDatabase;
+import com.application.gui.abstracts.factories.LoggerFactory;
 import com.application.gui.elements.contextmenus.Contextable;
-import com.application.gui.abstracts.enums.InfoType;
+import com.application.gui.elements.controllers.ThreadsController;
 import com.application.gui.elements.contextmenus.DataTableContextMenu;
 import com.application.gui.elements.contextmenus.FiltersContextMenu;
+import com.application.gui.elements.infobox.LogBox;
 import com.application.gui.windows.LoginWindow;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainWindowController extends Controller {
     
-    private static Logger log = Logger.getLogger(MainWindowController.class.getCanonicalName());
+    private static Logger log = LoggerFactory.getLogger(MainWindowController.class.getCanonicalName());
     
+    private ThreadsController threadsController;
     private LoginWindow loginWindow;
-    private MySQLConnection databaseConnection;
+    private LogBox logBox;
+    
+    private Connection databaseConnection;
     private Contextable dataTableContextMenu, filtersContextMenu;
+    
+    private boolean connectedToDatabase = false;
     
     @FXML
     private MenuBar menuBar;
-
+    
     @FXML
     private ScrollPane filtersPane;
     
@@ -36,11 +47,13 @@ public class MainWindowController extends Controller {
     private ListView filtersList;
     
     @FXML
-    private Label infoLabel;
+    private Label logLabel;
     
     @FXML
     public void initialize() {
         resultsReady = true;
+        logBox = new LogBox(logLabel);
+        threadsController = new ThreadsController();
         dataTableContextMenu = new DataTableContextMenu();
         filtersContextMenu = new FiltersContextMenu();
     }
@@ -49,30 +62,100 @@ public class MainWindowController extends Controller {
     public void connectToDatabase() {
         try {
             loginWindow = new LoginWindow();
-            
-        }
-        catch (IOException e) {
-        
+            Thread connectionWorker = new Thread(this::waitForDBConnection);
+            connectionWorker.start();
+            threadsController.addThread(connectionWorker);
+        } catch (IOException e) {
+            addLog("Nie udało się otworzyć okna logowania.", Level.SEVERE);
+            e.printStackTrace();
         }
     }
     
     @FXML
     public void disconnectFromDatabase() {
-    
+        closeDBConnection(true);
     }
     
     @FXML
     public void showDataTableContextMenu() {
         dataTable.setContextMenu(dataTableContextMenu.getContextMenu());
     }
-
+    
     @FXML
     public void showFiltersContextMenu() {
         filtersList.setContextMenu(filtersContextMenu.getContextMenu());
     }
     
-    private void addInfo(String message, InfoType type) {
+    private void addLog(String message, Level level) {
+        startLogBox();
+        
+        logBox.addLog(message, level);
+    }
     
+    private void addLog(String message, Level level, Exception e) {
+        startLogBox();
+        
+        logBox.addLog(message, level);
+        log.log(level, e.getMessage(), e);
+    }
+    
+    private void addLog(String message, Level level, String logMessage) {
+        startLogBox();
+        
+        logBox.addLog(message, level);
+        log.log(level, logMessage);
+    }
+    
+    private void startLogBox() {
+        if (!logBox.isAlive()) {
+            logBox.start();
+            threadsController.addThread(logBox);
+        }
+    }
+    
+    public void closeApplication() {
+        threadsController.killThreads();
+        if (loginWindow != null)
+            ((LoginWindowController) loginWindow.getController()).exit();
+        
+        Platform.exit();
+    }
+    
+    private void waitForDBConnection() {
+        try {
+            databaseConnection = (Connection) loginWindow.getController().getResult();
+            
+            if (databaseConnection == null)
+                throw new FailedToConnectToDatabase();
+            
+            addLog("Połączono z bazą danych.", Level.INFO);
+            connectedToDatabase = true;
+            return;
+        }
+        catch (FailedToConnectToDatabase e) {
+            addLog("Nie udało się połączyć z bazą danych.", Level.WARNING);
+        } catch (Exception e) {
+            addLog("Błąd aplikacji.", Level.SEVERE, e);
+        }
+        
+        closeDBConnection(false);
+        connectedToDatabase = false;
+    }
+    
+    private void closeDBConnection(boolean verbose) {
+        if (databaseConnection != null && connectedToDatabase) {
+            try {
+                databaseConnection.close();
+                connectedToDatabase = false;
+                if (verbose)
+                    addLog("Odłączono od bazy danych.", Level.INFO);
+            }
+            catch (SQLException e) {
+                addLog("Nie udało się zakończyć połączenia z bazą danych.",
+                        Level.WARNING, e);
+            }
+        } else if (verbose)
+            addLog("Nie jesteś połączony do żadnej bazy danych.", Level.SEVERE);
     }
     
     @Override

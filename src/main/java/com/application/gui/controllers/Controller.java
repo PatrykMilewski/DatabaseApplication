@@ -1,6 +1,6 @@
 package com.application.gui.controllers;
 
-abstract class Controller {
+public abstract class Controller {
     abstract Object getResult();
     boolean resultsReady;
 }

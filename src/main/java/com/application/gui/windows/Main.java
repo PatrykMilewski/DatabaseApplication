@@ -1,5 +1,7 @@
-package com.application.gui;
+package com.application.gui.windows;
 
+import com.application.gui.abstracts.factories.LoggerFactory;
+import com.application.gui.controllers.MainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,18 +13,29 @@ import java.util.logging.Logger;
 
 public class Main extends Application {
     
-    private static Logger log = Logger.getLogger(Main.class.getCanonicalName());
-    private static boolean debug = false;
+    private static Logger log = LoggerFactory.getLogger(Main.class.getCanonicalName());
     
     private final URL fxmlUrl = getClass().getResource("/fxml/mainWindow.fxml");
     
+    private FXMLLoader loader;
+    private MainWindowController controller;
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(fxmlUrl);
+        loader = new FXMLLoader(fxmlUrl);
+        Parent root = loader.load();
+        controller = loader.getController();
         primaryStage.setScene(new Scene(root));
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(200);
         primaryStage.show();
+    }
+    
+    
+    @Override
+    public void stop() {
+        controller.closeApplication();
+        System.exit(0);
     }
     
     public static void main(String[] args) {

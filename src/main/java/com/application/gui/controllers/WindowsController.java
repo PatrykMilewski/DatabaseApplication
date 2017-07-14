@@ -23,8 +23,6 @@ public class WindowsController {
         if (masterThreads.containsKey(newMaster))
             throw new DuplicateMasterThreadException(newMaster);
         
-        int var = masterThreads.size();
-        
         masterThreads.put(newMaster, new HashSet<>());
     }
     
