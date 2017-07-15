@@ -7,8 +7,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -19,6 +21,8 @@ public class LoginWindowController extends Controller {
     private MySQLConnection databaseConnection;
     private Stage stage;
     private String baseAndServerName = "localhost:testowa", username = "test", password = "982563";
+    
+    private Boolean imageCheckboxesStances[] = new Boolean[2];
     
     private boolean loginCancelled = false;
     
@@ -34,8 +38,16 @@ public class LoginWindowController extends Controller {
     @FXML
     private Label errorLabel;
     
+    @FXML
+    private Image hostImage;
+    
+    @FXML
+    private Image userImage;
+    
     public LoginWindowController() {
         resultsReady = false;
+        imageCheckboxesStances[0] = false;
+        imageCheckboxesStances[1] = false;
     }
     
     @FXML
@@ -80,6 +92,45 @@ public class LoginWindowController extends Controller {
         resultsReady = true;
         notifyAll();
         stage.close();
+    }
+    
+    @FXML
+    public void mouseEnteredHost() {
+        if (imageCheckboxesStances[0])
+            swapImage(hostImage, "images/login/db.png", imageCheckboxesStances[0]);
+        else
+            swapImage(hostImage, "images/login/db-rev.png", imageCheckboxesStances[0]);
+    }
+    
+    @FXML
+    public void mouseExitedHost() {
+        if (imageCheckboxesStances[0]);
+            //swapImage(hostImage, "");
+    }
+    
+    @FXML
+    public void mouseEnteredUser() {
+    
+    }
+
+    @FXML
+    public void mouseExitedUser() {
+    
+    }
+    
+    @FXML
+    public void hostImageClicked() {
+    
+    }
+    
+    @FXML
+    public void userImageClicked() {
+    
+    }
+    
+    private void swapImage(Image image, String imageUrl, Boolean checkBox) {
+        image = new Image(imageUrl);
+        checkBox = false;
     }
     
     private String translateLoginError(int code) {
