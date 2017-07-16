@@ -1,54 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.ToggleSwitch?>
 
-<AnchorPane maxHeight="337.0" maxWidth="340.0" minHeight="280.0" minWidth="340.0" prefHeight="320.0" prefWidth="340.0" styleClass="main-pane" stylesheets="@../css/loginWindowStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.LoginWindowController">
+<AnchorPane maxHeight="366.0" maxWidth="340.0" minHeight="280.0" minWidth="340.0" prefHeight="339.0" prefWidth="340.0" styleClass="main-pane" stylesheets="@../css/loginWindowStyles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.LoginWindowController">
    <children>
       <Label layoutX="94.0" layoutY="21.0" prefHeight="62.0" prefWidth="210.0" styleClass="big-label" stylesheets="@../css/loginWindowStyles.css" text="Zaloguj się" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman" size="28.0" />
          </font></Label>
-      <TextField fx:id="baseAndServerNameField" layoutX="95.0" layoutY="105.0" onAction="#baseAndHostNameEntered" onKeyReleased="#baseAndHostNameEntered" promptText="Nazwa bazy" styleClass="text-field" stylesheets="@../css/loginWindowStyles.css">
-         <font>
-            <Font size="14.0" />
-         </font></TextField>
-      <TextField fx:id="userNameField" layoutX="95.0" layoutY="144.0" onAction="#userNameEntered" onKeyReleased="#userNameEntered" promptText="Użytkownik" styleClass="text-field" stylesheets="@../css/loginWindowStyles.css">
-         <font>
-            <Font size="14.0" />
-         </font></TextField>
-      <PasswordField fx:id="passwordField" layoutX="95.0" layoutY="184.0" onAction="#login" onKeyReleased="#passwordEntered" promptText="Hasło" styleClass="test-field">
-         <font>
-            <Font size="14.0" />
-         </font></PasswordField>
-      <Button layoutX="157.0" layoutY="238.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="113.0" stylesheets="@../css/loginWindowStyles.css" text="Zaloguj">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="65.0" layoutY="238.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="77.0" stylesheets="@../css/loginWindowStyles.css" text="Anuluj">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Label fx:id="errorLabel" layoutX="81.0" layoutY="282.0" prefHeight="17.0" prefWidth="177.0" styleClass="error-label" stylesheets="@../css/loginWindowStyles.css" textAlignment="CENTER" textFill="#ff5300" />
-      <ImageView fx:id="hostImage" fitHeight="30.0" fitWidth="34.0" layoutX="64.0" layoutY="105.0" onMouseEntered="#mouseEnteredHost" onMouseExited="#mouseExitedHost" onMouseReleased="#hostImageClicked" pickOnBounds="true" preserveRatio="true">
-         <image>
+      <TextField fx:id="baseAndServerNameField" layoutX="95.0" layoutY="105.0" onAction="#baseAndHostNameEntered" onKeyReleased="#baseAndHostNameEntered" promptText="Serwer : Nazwa bazy" styleClass="text-field" stylesheets="@../css/loginWindowStyles.css" />
+      <TextField fx:id="userNameField" layoutX="95.0" layoutY="144.0" onAction="#userNameEntered" onKeyReleased="#userNameEntered" promptText="Użytkownik" styleClass="text-field" stylesheets="@../css/loginWindowStyles.css" />
+      <PasswordField fx:id="passwordField" layoutX="95.0" layoutY="184.0" onAction="#login" onKeyReleased="#passwordEntered" promptText="Hasło" styleClass="text-field" />
+      <Button layoutX="157.0" layoutY="260.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="113.0" styleClass="button" stylesheets="@../css/loginWindowStyles.css" text="Zaloguj"/>
+      <Button layoutX="64.0" layoutY="260.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="77.0" styleClass="button" stylesheets="@../css/loginWindowStyles.css" text="Anuluj"/>
+      <Label fx:id="errorLabel" layoutX="82.0" layoutY="303.0" prefHeight="17.0" prefWidth="177.0" styleClass="error-label" stylesheets="@../css/loginWindowStyles.css" textAlignment="CENTER" textFill="#ff5300" />
+      <ImageView fitHeight="30.0" fitWidth="34.0" layoutX="64.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../images/login/db.png" />
-         </image>
       </ImageView>
-      <ImageView fx:id="userImage" fitHeight="30.0" fitWidth="34.0" layoutX="64.0" layoutY="144.0" onMouseEntered="#mouseEnteredUser" onMouseExited="#mouseExitedUser" onMouseReleased="#userImageClicked" pickOnBounds="true" preserveRatio="true">
-         <image>
+      <ImageView fitHeight="30.0" fitWidth="34.0" layoutX="64.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../images/login/login.png" />
-         </image>
       </ImageView>
       <ImageView fitHeight="30.0" fitWidth="34.0" layoutX="64.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-         <image>
             <Image url="@../images/login/password.png" />
-         </image>
       </ImageView>
+      <ToggleSwitch fx:id="saveSettingsSwitch" layoutX="113.0" layoutY="226.0" prefHeight="18.0" prefWidth="30.0" text="Zapamiętaj ustawienia  " />
    </children>
 </AnchorPane>

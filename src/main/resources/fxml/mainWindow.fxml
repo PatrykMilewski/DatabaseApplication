@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="441.0" prefWidth="677.0" stylesheets="@../css/mainWindowStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.MainWindowController">
+<BorderPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="441.0" prefWidth="677.0" stylesheets="@../css/mainWindowStyles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.MainWindowController">
     <top>
         <MenuBar fx:id="menuBar" prefHeight="52.0" prefWidth="754.0" stylesheets="@../css/mainWindowStyles.css" BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuBarActionOpenSQLQuery" text="SQL Query">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#menuBarCloseAction" text="Zamknij" />
                     </items>
                 </Menu>
             <Menu mnemonicParsing="false" text="Połączenie">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#connectToDatabase" text="Połącz z bazą danych" />
-                  <MenuItem mnemonicParsing="false" onAction="#disconnectFromDatabase" text="Rozłącz z bazą danych" />
+                  <MenuItem mnemonicParsing="false" onAction="#connectToDatabase" text="Połącz z bazą danych">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#disconnectFromDatabase" text="Rozłącz z bazą danych">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                </items>
             </Menu>
                 <Menu mnemonicParsing="false" text="Edytuj">
@@ -24,6 +42,11 @@
                         <MenuItem mnemonicParsing="false" text="Delete" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Ustawienia">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#resetSettings" text="Resetuj" />
+              </items>
+            </Menu>
                 <Menu mnemonicParsing="false" text="Pomoc">
                     <items>
                         <MenuItem mnemonicParsing="false" text="About" />

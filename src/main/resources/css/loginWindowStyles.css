@@ -2,3 +2,11 @@
     -fx-border-color: black;
     -fx-border-width: 2px;
 }
+
+.text-field {
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-font-size: 14px;
+}

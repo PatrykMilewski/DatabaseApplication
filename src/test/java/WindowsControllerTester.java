@@ -1,7 +1,6 @@
 import com.application.gui.abstracts.exceptions.DuplicateMasterThreadException;
 import com.application.gui.abstracts.exceptions.DuplicateSlaveThreadException;
 import com.application.gui.abstracts.exceptions.UnknownMasterThreadException;
-import com.application.gui.abstracts.exceptions.UnknownSlaveThreadException;
 import com.application.gui.controllers.WindowsController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -134,7 +133,6 @@ public class WindowsControllerTester {
     public void addSlaveThreadsDetectsDuplicateSlaves() {
         Thread master = new Thread();
         Thread slave = new Thread();
-        Thread secondSlave = new Thread();
         boolean exceptionUnexpected = false;
         boolean exceptionExpected = false;
     

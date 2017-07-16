@@ -1,5 +1,6 @@
 package com.application.gui.controllers;
 
+import com.application.gui.abstracts.consts.values.ConstValues;
 import com.application.gui.abstracts.exceptions.FailedToConnectToDatabase;
 import com.application.gui.abstracts.factories.LoggerFactory;
 import com.application.gui.elements.contextmenus.Contextable;
@@ -11,8 +12,12 @@ import com.application.gui.windows.LoginWindow;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.apache.maven.model.Model;
+import org.codehaus.plexus.util.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -66,8 +71,25 @@ public class MainWindowController extends Controller {
             connectionWorker.start();
             threadsController.addThread(connectionWorker);
         } catch (IOException e) {
-            addLog("Nie udało się otworzyć okna logowania.", Level.SEVERE);
+            addLog(Level.SEVERE, "Nie udało się otworzyć okna logowania.");
             e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    public void resetSettings() {
+        Model model = ConstValues.getModel();
+        String appData = System.getenv("APPDATA");
+        String dataPath = Paths.get(appData, model.getArtifactId(), model.getVersion()).toString();
+    
+        try {
+            FileUtils.deleteDirectory(new File(dataPath));
+            addLog(Level.INFO, "Usunięto dane aplikacji.");
+            log.log(Level.INFO, "Deleted application data.");
+        } catch (IOException e) {
+            addLog(Level.SEVERE, "Nie udało się usunąć danych aplikacji.");
+            log.log(Level.SEVERE, "Failed to delete application data.");
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
     }
     
@@ -86,13 +108,23 @@ public class MainWindowController extends Controller {
         filtersList.setContextMenu(filtersContextMenu.getContextMenu());
     }
     
-    private void addLog(String message, Level level) {
+    @FXML
+    public void menuBarCloseAction() {
+        closeApplication();
+    }
+    
+    @FXML
+    public void menuBarActionOpenSQLQuery() {
+    
+    }
+    
+    private void addLog(Level level, String message) {
         startLogBox();
         
         logBox.addLog(message, level);
     }
     
-    private void addLog(String message, Level level, Exception e) {
+    private void addLog(Level level, String message, Exception e) {
         startLogBox();
         
         logBox.addLog(message, level);
@@ -128,14 +160,14 @@ public class MainWindowController extends Controller {
             if (databaseConnection == null)
                 throw new FailedToConnectToDatabase();
             
-            addLog("Połączono z bazą danych.", Level.INFO);
+            addLog(Level.INFO, "Połączono z bazą danych.");
             connectedToDatabase = true;
             return;
         }
         catch (FailedToConnectToDatabase e) {
-            addLog("Nie udało się połączyć z bazą danych.", Level.WARNING);
+            addLog(Level.WARNING, "Nie udało się połączyć z bazą danych.");
         } catch (Exception e) {
-            addLog("Błąd aplikacji.", Level.SEVERE, e);
+            addLog(Level.SEVERE, "Błąd aplikacji.", e);
         }
         
         closeDBConnection(false);
@@ -148,14 +180,13 @@ public class MainWindowController extends Controller {
                 databaseConnection.close();
                 connectedToDatabase = false;
                 if (verbose)
-                    addLog("Odłączono od bazy danych.", Level.INFO);
+                    addLog(Level.INFO, "Odłączono od bazy danych.");
             }
             catch (SQLException e) {
-                addLog("Nie udało się zakończyć połączenia z bazą danych.",
-                        Level.WARNING, e);
+                addLog(Level.WARNING, "Nie udało się zakończyć połączenia z bazą danych.", e);
             }
         } else if (verbose)
-            addLog("Nie jesteś połączony do żadnej bazy danych.", Level.SEVERE);
+            addLog(Level.SEVERE,"Nie jesteś połączony do żadnej bazy danych.");
     }
     
     @Override
