@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.logging.Logger;
 
-public class Main extends Application {
+public class MainWindow extends Application {
     
-    private static Logger log = LoggerFactory.getLogger(Main.class.getCanonicalName());
+    private static Logger log = LoggerFactory.getLogger(MainWindow.class.getCanonicalName());
     
     private final URL fxmlUrl = getClass().getResource("/fxml/mainWindow.fxml");
     

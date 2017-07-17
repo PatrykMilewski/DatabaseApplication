@@ -9,6 +9,7 @@ import com.application.gui.elements.contextmenus.DataTableContextMenu;
 import com.application.gui.elements.contextmenus.FiltersContextMenu;
 import com.application.gui.elements.infobox.LogBox;
 import com.application.gui.windows.LoginWindow;
+import com.application.gui.windows.SQLQueryWindow;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -29,6 +30,7 @@ public class MainWindowController extends Controller {
     
     private ThreadsController threadsController;
     private LoginWindow loginWindow;
+    private SQLQueryWindow sqlQueryWindow;
     private LogBox logBox;
     
     private Connection databaseConnection;
@@ -71,8 +73,7 @@ public class MainWindowController extends Controller {
             connectionWorker.start();
             threadsController.addThread(connectionWorker);
         } catch (IOException e) {
-            addLog(Level.SEVERE, "Nie udało się otworzyć okna logowania.");
-            e.printStackTrace();
+            addLog(Level.SEVERE, "Nie udało się otworzyć okna logowania.", e);
         }
     }
     
@@ -85,11 +86,8 @@ public class MainWindowController extends Controller {
         try {
             FileUtils.deleteDirectory(new File(dataPath));
             addLog(Level.INFO, "Usunięto dane aplikacji.");
-            log.log(Level.INFO, "Deleted application data.");
         } catch (IOException e) {
-            addLog(Level.SEVERE, "Nie udało się usunąć danych aplikacji.");
-            log.log(Level.SEVERE, "Failed to delete application data.");
-            log.log(Level.SEVERE, e.getMessage(), e);
+            addLog(Level.SEVERE, "Nie udało się usunąć danych aplikacji.", e);
         }
     }
     
@@ -115,8 +113,42 @@ public class MainWindowController extends Controller {
     
     @FXML
     public void menuBarActionOpenSQLQuery() {
-    
+        try {
+            sqlQueryWindow = new SQLQueryWindow(databaseConnection);
+            Thread queryWindowThread = new Thread(this::waitForDBQueryWindow);
+            queryWindowThread.start();
+            threadsController.addThread(queryWindowThread);
+        } catch (IOException e) {
+            addLog(Level.SEVERE, "Nie udało się otworzyć okna SQL Query.", e);
+        }
     }
+    
+    private void waitForDBQueryWindow() {
+        sqlQueryWindow.getController().getResult();
+        addLog(Level.INFO, "Zamknięto okno SQL Query.");
+    }
+    
+    private void waitForDBConnection() {
+        try {
+            databaseConnection = (Connection) loginWindow.getController().getResult();
+            
+            if (databaseConnection == null)
+                throw new FailedToConnectToDatabase();
+            
+            addLog(Level.INFO, "Połączono z bazą danych.");
+            connectedToDatabase = true;
+            return;
+        }
+        catch (FailedToConnectToDatabase e) {
+            addLog(Level.WARNING, "Nie udało się połączyć z bazą danych.");
+        } catch (Exception e) {
+            addLog(Level.SEVERE, "Błąd aplikacji.", e);
+        }
+        
+        closeDBConnection(false);
+        connectedToDatabase = false;
+    }
+    
     
     private void addLog(Level level, String message) {
         startLogBox();
@@ -148,30 +180,9 @@ public class MainWindowController extends Controller {
     public void closeApplication() {
         threadsController.killThreads();
         if (loginWindow != null)
-            ((LoginWindowController) loginWindow.getController()).exit();
+            loginWindow.getController().exit();
         
         Platform.exit();
-    }
-    
-    private void waitForDBConnection() {
-        try {
-            databaseConnection = (Connection) loginWindow.getController().getResult();
-            
-            if (databaseConnection == null)
-                throw new FailedToConnectToDatabase();
-            
-            addLog(Level.INFO, "Połączono z bazą danych.");
-            connectedToDatabase = true;
-            return;
-        }
-        catch (FailedToConnectToDatabase e) {
-            addLog(Level.WARNING, "Nie udało się połączyć z bazą danych.");
-        } catch (Exception e) {
-            addLog(Level.SEVERE, "Błąd aplikacji.", e);
-        }
-        
-        closeDBConnection(false);
-        connectedToDatabase = false;
     }
     
     private void closeDBConnection(boolean verbose) {

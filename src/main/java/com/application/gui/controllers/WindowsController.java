@@ -7,11 +7,6 @@ import com.application.gui.abstracts.exceptions.UnknownSlaveThreadException;
 
 import java.util.*;
 
-/**
- * Complexity of this class methods looks bad, but there are really
- * not much threads in application to make it a problem.
- */
-
 public class WindowsController {
     private static Map<Thread, Set<Thread>> masterThreads;
     

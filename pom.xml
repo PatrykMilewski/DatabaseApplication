@@ -17,7 +17,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.application.gui.windows.Main</mainClass>
+                            <mainClass>com.application.gui.windows.MainWindow</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

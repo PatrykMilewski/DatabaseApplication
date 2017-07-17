@@ -1,7 +1,6 @@
 package com.application.gui.controllers;
 
 import com.application.database.connection.MySQLConnection;
-import com.application.gui.abstracts.consts.values.ConstValues;
 import com.application.gui.abstracts.factories.LoggerFactory;
 import com.application.gui.elements.controllers.ThreadsController;
 import com.application.gui.elements.loaders.UserDataLoader;
@@ -9,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.controlsfx.control.ToggleSwitch;
 import org.controlsfx.control.textfield.TextFields;
@@ -26,7 +24,6 @@ public class LoginWindowController extends Controller {
     private static UserDataLoader userDataLoader = new UserDataLoader();
     
     private MySQLConnection databaseConnection;
-    private Stage stage;
     private String baseAndServerName = "localhost:testowa", username = "test", password = "982563";
     private Set<String> savedHosts, savedUsers;
     
@@ -43,12 +40,6 @@ public class LoginWindowController extends Controller {
     
     @FXML
     private Label errorLabel;
-    
-    @FXML
-    private Image hostImage;
-    
-    @FXML
-    private Image userImage;
     
     @FXML
     private ToggleSwitch saveSettingsSwitch;
@@ -82,6 +73,7 @@ public class LoginWindowController extends Controller {
     @FXML
     synchronized public void login() {
         if (baseAndServerName.length() != 0 && username.length() != 0 && password.length() != 0) {
+            refreshInputData();
             String hostAndBase[] = baseAndServerName.split(":");
             resultsReady = false;
             databaseConnection = new MySQLConnection(username, password, hostAndBase[0], hostAndBase[1]);
@@ -93,6 +85,9 @@ public class LoginWindowController extends Controller {
                 errorLabel.setText("Błąd: "+ translateLoginError(e.getErrorCode()));
             }
         }
+        else {
+            errorLabel.setText("Uzupełnij wszystkie pola");
+        }
         
         if (resultsReady) {
             notifyAll();
@@ -100,6 +95,12 @@ public class LoginWindowController extends Controller {
                 saveHostsAndUserInfo();
             exit();
         }
+    }
+    
+    private void refreshInputData() {
+        baseAndHostNameEntered();
+        userNameEntered();
+        passwordEntered();
     }
     
     private void loadUserSettingsFromFile() {
@@ -128,7 +129,8 @@ public class LoginWindowController extends Controller {
         }
     }
     
-    void exit() {
+    @Override
+    public void exit() {
         threadsController.killThreads();
         stage.close();
     }
