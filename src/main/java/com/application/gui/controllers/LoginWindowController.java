@@ -135,6 +135,7 @@ public class LoginWindowController extends Controller {
     
     @Override
     public void exit() {
+        MainWindowController.setIsLoginWindowOpen(false);
         threadsController.killThreads();
         stage.close();
     }

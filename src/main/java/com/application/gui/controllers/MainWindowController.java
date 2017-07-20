@@ -88,6 +88,7 @@ public class MainWindowController extends Controller {
             Thread connectionWorker = new Thread(this::waitForDBConnection);
             connectionWorker.start();
             threadsController.addThread(connectionWorker);
+            isLoginWindowOpen = true;
         } catch (IOException e) {
             addLog(Level.SEVERE, "Nie udało się otworzyć okna logowania.", e);
         }
@@ -139,6 +140,7 @@ public class MainWindowController extends Controller {
             Thread queryWindowThread = new Thread(this::waitForDBQueryWindow);
             queryWindowThread.start();
             threadsController.addThread(queryWindowThread);
+            isSQLQueryWindowOpen = true;
         } catch (IOException e) {
             addLog(Level.SEVERE, "Nie udało się otworzyć okna SQL Query.", e);
         }

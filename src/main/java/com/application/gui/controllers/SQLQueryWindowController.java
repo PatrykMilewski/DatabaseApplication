@@ -1,13 +1,8 @@
 package com.application.gui.controllers;
 
-import com.application.database.sql.Query;
 import com.application.database.tables.TableInfo;
-import com.application.gui.abstracts.exceptions.IllegalQueryInTableLockStateException;
-import com.application.gui.abstracts.exceptions.QueryInTableLockNotFound;
 import com.application.gui.abstracts.factories.LoggerFactory;
 import com.application.gui.elements.alerts.MyAlerts;
-import com.application.gui.elements.containers.LockingHashMap;
-import com.application.gui.elements.containers.QueryInTable;
 import com.application.gui.elements.controllers.ThreadsController;
 import com.sun.rowset.CachedRowSetImpl;
 import javafx.application.Platform;
@@ -16,14 +11,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.*;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,9 +31,6 @@ public class SQLQueryWindowController extends Controller {
     private int tabsCounter = 1;
     
     private ThreadsController threadsController = new ThreadsController();
-    
-    private LockingHashMap<QueryInTable> queryInTablesMap = new LockingHashMap<>();
-    private static Map<QueryInTable, Thread> queryInTabLockNotify = new ConcurrentHashMap<>();
     
     @FXML
     private TextArea queryTextArea;
@@ -66,67 +55,18 @@ public class SQLQueryWindowController extends Controller {
         //todo remove old tabs from pane mechanism to avoid memory leak
         
         for (String sqlCommand : queryAreaText.split(";")) {
-            Query query = new Query(sqlCommand);
-            CachedRowSet cachedRowSet = processSQLCommand(query.getNextPackQuery());
+            CachedRowSet cachedRowSet = processSQLCommand(sqlCommand);
             Tab tab = new Tab("Tabela " + tabsCounter);
-            QueryInTable queryInTable = new QueryInTable(tab, new TableView<>(), query);
             tabsCounter++;
-            queryInTablesMap.addAndLock(queryInTable);
-            Platform.runLater(() -> displayResults(queryInTable, cachedRowSet));
+            Platform.runLater(() -> displayResults(new TableView<>(), tab, cachedRowSet));
         }
     }
     
-    synchronized private void processQuery(QueryInTable queryInTable) {
-        //todo remove old tabs from pane mechanism to avoid memory leak
-        
-        while(queryInTablesMap.isLocked(queryInTable)) {
-            if (!queryInTabLockNotify.containsKey(queryInTable))
-                queryInTabLockNotify.put(queryInTable, Thread.currentThread());
-            
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                log.log(Level.WARNING, e.getMessage(), e);
-            }
-        }
-        
-        CachedRowSet cachedRowSet = processSQLCommand(queryInTable.query.getNextPackQuery());
-        Platform.runLater(() -> displayResults(queryInTable, cachedRowSet));
-        queryInTablesMap.addAndLock(queryInTable);
-    }
+    private void displayResults(TableView<ObservableList> tableView, Tab tab, CachedRowSet cachedRowSet) {
+        tabPane.getTabs().add(tab);
+        tab.setContent(tableView);
     
-    private void displayResults(QueryInTable queryInTable, CachedRowSet cachedRowSet) {
-        tabPane.getTabs().add(queryInTable.tab);
-        queryInTable.initialize();
-    
-        handleSingleResultSet(queryInTable.tableView, cachedRowSet);
-        queryInTablesMap.unlockElement(queryInTable);
-        queryInTable.tab.setOnClosed(event -> queryInTablesMap.forceRemove(queryInTable));
-        
-//        stage.show();
-//
-//        for (Node n : queryInTable.tableView.lookupAll(".scroll-bar")) {
-//            if (n instanceof ScrollBar)
-//                System.out.println("dupa");
-//        }
-//
-//        queryInTable.tableView.setOnScroll(event -> {
-//
-//        });
-//
-//
-//        ScrollBar tableScrollBar = (ScrollBar) queryInTable.tableView.lookup(".scroll-bar");
-//        if (tableScrollBar != null) {
-//            tableScrollBar.valueProperty().addListener((obs, oldValue, newValue) -> {
-//                if (newValue.doubleValue() >= (4 * tableScrollBar.getMax() / 5)) {
-//                    try {
-//                        updateTable(queryInTable);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-//        }
+        handleSingleResultSet(tableView, cachedRowSet);
     }
     
     private CachedRowSet processSQLCommand(String sqlCommand) {
@@ -207,6 +147,13 @@ public class SQLQueryWindowController extends Controller {
             MyAlerts.showExceptionAlert("Wyjątek podczas wykonywania SQL query.", e, true);
         }
     }
+    
+    @Override
+    public void exit() {
+        MainWindowController.setIsSQLQueryWindowOpen(false);
+        threadsController.killThreads();
+        stage.close();
+    }
 
     public void setConnection(Connection connection) {
         this.connection = connection;
@@ -223,28 +170,5 @@ public class SQLQueryWindowController extends Controller {
         }
         
         return resultsReady ? 0 : 1;
-    }
-    
-    synchronized public static <E> void elementUnlocked(E element) {
-        QueryInTable queryInTable = (QueryInTable) element;
-        if (queryInTabLockNotify.containsKey(queryInTable)) {
-            Thread thread = queryInTabLockNotify.get(queryInTable);
-            thread.notify();
-        }
-    }
-    
-    private void updateTable(QueryInTable queryInTable)
-            throws IllegalQueryInTableLockStateException, QueryInTableLockNotFound {
-        
-        if (queryInTablesMap.contains(queryInTable)) {
-            if (queryInTablesMap.isLocked(queryInTable))
-                throw new IllegalQueryInTableLockStateException();
-            
-            Thread thread = new Thread(() -> processQuery(queryInTable));
-            threadsController.addThread(thread);
-            thread.start();
-        }
-        else
-            throw new QueryInTableLockNotFound();
     }
 }

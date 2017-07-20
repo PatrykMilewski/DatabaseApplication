@@ -2,7 +2,6 @@ package com.application.gui.elements.containers;
 
 import com.application.gui.abstracts.consts.enums.RemoveResults;
 import com.application.gui.abstracts.types.MutableBool;
-import com.application.gui.controllers.SQLQueryWindowController;
 
 import java.util.*;
 
@@ -18,7 +17,6 @@ public class LockingHashMap<E> {
     
     public void unlockElement(E element) {
         elementAndLock.get(element).setFalse();
-        SQLQueryWindowController.elementUnlocked(element);
     }
     
     public boolean contains(E element) {
