@@ -28,6 +28,9 @@ public class MainWindowController extends Controller {
     
     private static Logger log = LoggerFactory.getLogger(MainWindowController.class.getCanonicalName());
     
+    private static boolean isSQLQueryWindowOpen = false;
+    private static boolean isLoginWindowOpen = false;
+    
     private ThreadsController threadsController;
     private LoginWindow loginWindow;
     private SQLQueryWindow sqlQueryWindow;
@@ -56,6 +59,14 @@ public class MainWindowController extends Controller {
     @FXML
     private Label logLabel;
     
+    public static void setIsSQLQueryWindowOpen(boolean isSQLQueryWindowOpen) {
+        MainWindowController.isSQLQueryWindowOpen = isSQLQueryWindowOpen;
+    }
+    
+    public static void setIsLoginWindowOpen(boolean isLoginWindowOpen) {
+        MainWindowController.isLoginWindowOpen = isLoginWindowOpen;
+    }
+    
     @FXML
     public void initialize() {
         resultsReady = true;
@@ -67,6 +78,11 @@ public class MainWindowController extends Controller {
     
     @FXML
     public void connectToDatabase() {
+        if (isLoginWindowOpen) {
+            addLog(Level.SEVERE, "Okno logowania jest już otwarte.");
+            return;
+        }
+        
         try {
             loginWindow = new LoginWindow();
             Thread connectionWorker = new Thread(this::waitForDBConnection);
@@ -113,6 +129,11 @@ public class MainWindowController extends Controller {
     
     @FXML
     public void menuBarActionOpenSQLQuery() {
+        if (isSQLQueryWindowOpen) {
+            addLog(Level.SEVERE, "Okno SQL Query jest już otwarte.");
+            return;
+        }
+        
         try {
             sqlQueryWindow = new SQLQueryWindow(databaseConnection);
             Thread queryWindowThread = new Thread(this::waitForDBQueryWindow);

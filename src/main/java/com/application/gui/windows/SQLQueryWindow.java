@@ -16,6 +16,7 @@ public class SQLQueryWindow extends Window {
         controller = fxmlLoader.getController();
         ((SQLQueryWindowController) controller).setConnection(connection);
         stage = new Stage();
+        controller.setStage(stage);
         stage.setTitle("");
         stage.setScene(new Scene(root));
         stage.show();

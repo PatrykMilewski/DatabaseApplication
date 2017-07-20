@@ -18,7 +18,8 @@ public class ThreadsController {
     
     public void killThreads() {
         for (Thread thread : threadSet) {
-            thread.interrupt();
+            if (thread != null)
+                thread.interrupt();
         }
     }
     

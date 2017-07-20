@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.control.ToggleSwitch;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import java.util.logging.Logger;
 public class LoginWindowController extends Controller {
     
     private static Logger log = LoggerFactory.getLogger(LoginWindowController.class.getCanonicalName());
+
+    private static final int AUTOCOMPLETIONDELAY = 30;
     
     private static ThreadsController threadsController = new ThreadsController();
     private static UserDataLoader userDataLoader = new UserDataLoader();
@@ -48,11 +51,12 @@ public class LoginWindowController extends Controller {
     public void initialize() {
         resultsReady = false;
         loadUserSettingsFromFile();
+        AutoCompletionBinding<String> autoCompletionBinding;
         if (savedUsers != null)
-            TextFields.bindAutoCompletion(userNameField, savedUsers);
+            TextFields.bindAutoCompletion(userNameField, savedUsers).setDelay(AUTOCOMPLETIONDELAY);
         
         if (savedHosts != null)
-            TextFields.bindAutoCompletion(baseAndServerNameField, savedHosts);
+            TextFields.bindAutoCompletion(baseAndServerNameField, savedHosts).setDelay(AUTOCOMPLETIONDELAY);
     }
     
     @FXML

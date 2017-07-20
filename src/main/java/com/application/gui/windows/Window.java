@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public abstract class Window {
     protected Controller controller;
     FXMLLoader fxmlLoader;
-    protected Stage stage;
+    Stage stage;
     
     public Controller getController() {
         return controller;

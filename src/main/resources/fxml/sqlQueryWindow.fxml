@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.SQLQueryWindowController">
-   <top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.SQLQueryWindowController">
+    <stylesheets>
+        <URL value="@../css/sqlQueryWindowStyles.css" />
+    </stylesheets>
+    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="Plik">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#processQuery" text="Wywołaj">
+              <MenuItem mnemonicParsing="false" onAction="#menuBarProcessQueryClicked" text="Wywołaj">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -34,10 +40,18 @@
         </menus>
       </MenuBar>
    </top>
-   <center>
-      <TextArea fx:id="queryTextArea" prefHeight="193.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
-   </center>
    <bottom>
-      <TableView fx:id="resultsTable" prefHeight="191.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <TabPane fx:id="tabPane" prefHeight="257.0" prefWidth="828.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
    </bottom>
+   <center>
+      <SplitPane dividerPositions="0.9007" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TextArea fx:id="queryTextArea" minHeight="0.0" minWidth="0.0" prefHeight="322.0" prefWidth="739.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
+          <AnchorPane maxWidth="60.0" minHeight="0.0" minWidth="60.0" prefWidth="60.0" />
+        </items>
+      </SplitPane>
+   </center>
 </BorderPane>

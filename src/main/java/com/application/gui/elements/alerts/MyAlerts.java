@@ -14,10 +14,10 @@ public abstract class MyAlerts {
     
     private MyAlerts() { }
     
-    public static void showExceptionAlert(String text, Exception e) {
+    public static void showExceptionAlert(String headerText, Exception e, boolean wait) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Wystąpił wyjątek");
-        alert.setHeaderText(text);
+        alert.setHeaderText(headerText);
         alert.setContentText(e.getMessage());
         
         StringWriter sw = new StringWriter();
@@ -42,20 +42,20 @@ public abstract class MyAlerts {
         expContent.add(textArea, 0, 1);
         
         alert.getDialogPane().setExpandableContent(expContent);
-        
-        alert.showAndWait();
+    
+        showAndWait(alert, wait);
     }
     
-    public static void showInfoAlert(String title, String header, String context) {
+    public static void showInfoAlert(String title, String header, String context, boolean wait) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(context);
     
-        alert.showAndWait();
+        showAndWait(alert, wait);
     }
     
-    public static void showInfoAlertMultipleSets(int setsAmount, String result) {
+    public static void showInfoAlertMultipleSets(String result, boolean wait) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Wyświetlenie wyniku");
         alert.setHeaderText("Pomyślnie wykonano polecenie SQL.");
@@ -79,7 +79,14 @@ public abstract class MyAlerts {
 
         alert.getDialogPane().setExpandableContent(expContent);
     
-        alert.showAndWait();
+        showAndWait(alert, wait);
+    }
+    
+    private static void showAndWait(Alert alert, boolean wait) {
+        if (wait)
+            alert.showAndWait();
+        else
+            alert.show();
     }
     
 }
