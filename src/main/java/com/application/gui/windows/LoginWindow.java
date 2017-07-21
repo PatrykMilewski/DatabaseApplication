@@ -17,7 +17,9 @@ public class LoginWindow extends Window {
         stage.setTitle("");
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(new Scene(root));
+        setIcon();
         controller.setStage(stage);
+        stage.setOnCloseRequest(event -> controller.closeWindow());
         stage.show();
     }
 }

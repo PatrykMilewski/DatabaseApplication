@@ -51,7 +51,6 @@ public class LoginWindowController extends Controller {
     public void initialize() {
         resultsReady = false;
         loadUserSettingsFromFile();
-        AutoCompletionBinding<String> autoCompletionBinding;
         if (savedUsers != null)
             TextFields.bindAutoCompletion(userNameField, savedUsers).setDelay(AUTOCOMPLETIONDELAY);
         
@@ -75,7 +74,7 @@ public class LoginWindowController extends Controller {
     }
     
     @FXML
-    synchronized public void login() {
+    synchronized public void loginButtonClicked() {
         if (baseAndServerName.length() != 0 && username.length() != 0 && password.length() != 0) {
             refreshInputData();
             String hostAndBase[] = baseAndServerName.split(":");
@@ -97,7 +96,7 @@ public class LoginWindowController extends Controller {
             notifyAll();
             if (saveSettingsSwitch.isSelected())
                 saveHostsAndUserInfo();
-            exit();
+            closeWindow();
         }
     }
     
@@ -120,11 +119,9 @@ public class LoginWindowController extends Controller {
     }
     
     @FXML
-    synchronized public void cancel() {
+    public void cancelButtonClicked() {
         loginCancelled = true;
-        resultsReady = true;
-        notifyAll();
-        stage.close();
+        closeWindow();
     }
     
     private String translateLoginError(int code) {
@@ -134,8 +131,10 @@ public class LoginWindowController extends Controller {
     }
     
     @Override
-    public void exit() {
+    public synchronized void closeWindow() {
         MainWindowController.setIsLoginWindowOpen(false);
+        resultsReady = true;
+        notifyAll();
         threadsController.killThreads();
         stage.close();
     }

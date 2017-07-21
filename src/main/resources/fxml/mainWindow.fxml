@@ -58,13 +58,13 @@
     <left>
         <ScrollPane fx:id="filtersPane" fitToHeight="true" fitToWidth="true" prefHeight="527.0" prefWidth="188.0" styleClass="filters-pane" stylesheets="@../css/mainWindowStyles.css" BorderPane.alignment="CENTER">
          <content>
-            <ListView fx:id="filtersList" onContextMenuRequested="#showFiltersContextMenu" prefHeight="200.0" prefWidth="200.0" />
+            <ListView id="list-view" fx:id="filtersList" onContextMenuRequested="#showFiltersContextMenu" prefHeight="200.0" prefWidth="200.0" styleClass="focusable" />
          </content></ScrollPane>
     </left>
     <center>
         <ScrollPane id="data-pane" fx:id="dataPane" fitToHeight="true" fitToWidth="true" prefHeight="373.0" prefWidth="489.0" stylesheets="@../css/mainWindowStyles.css" BorderPane.alignment="CENTER">
          <content>
-            <TableView fx:id="dataTable" onContextMenuRequested="#showDataTableContextMenu" prefHeight="377.0" prefWidth="469.0" />
+            <TableView id="table-view" fx:id="dataTable" onContextMenuRequested="#showDataTableContextMenu" prefHeight="377.0" prefWidth="469.0" styleClass="focusable" />
          </content></ScrollPane>
     </center>
    <bottom>

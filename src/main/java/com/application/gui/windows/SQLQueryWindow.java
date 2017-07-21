@@ -17,8 +17,10 @@ public class SQLQueryWindow extends Window {
         ((SQLQueryWindowController) controller).setConnection(connection);
         stage = new Stage();
         controller.setStage(stage);
-        stage.setTitle("");
+        stage.setTitle("SQL Query");
+        setIcon();
         stage.setScene(new Scene(root));
+        stage.setOnCloseRequest(event -> controller.closeWindow());
         stage.show();
     }
 }

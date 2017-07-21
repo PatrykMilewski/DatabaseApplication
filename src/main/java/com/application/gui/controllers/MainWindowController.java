@@ -59,11 +59,11 @@ public class MainWindowController extends Controller {
     @FXML
     private Label logLabel;
     
-    public static void setIsSQLQueryWindowOpen(boolean isSQLQueryWindowOpen) {
+    static void setIsSQLQueryWindowOpen(boolean isSQLQueryWindowOpen) {
         MainWindowController.isSQLQueryWindowOpen = isSQLQueryWindowOpen;
     }
     
-    public static void setIsLoginWindowOpen(boolean isLoginWindowOpen) {
+    static void setIsLoginWindowOpen(boolean isLoginWindowOpen) {
         MainWindowController.isLoginWindowOpen = isLoginWindowOpen;
     }
     
@@ -203,7 +203,10 @@ public class MainWindowController extends Controller {
     public void closeApplication() {
         threadsController.killThreads();
         if (loginWindow != null)
-            loginWindow.getController().exit();
+            loginWindow.getController().closeWindow();
+        
+        if (sqlQueryWindow != null)
+            sqlQueryWindow.getController().closeWindow();
         
         Platform.exit();
     }

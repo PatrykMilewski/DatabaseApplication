@@ -11,7 +11,7 @@ public abstract class Controller {
         this.stage = stage;
     }
     
-    public void exit() {
+    public void closeWindow() {
         stage.close();
     }
 }

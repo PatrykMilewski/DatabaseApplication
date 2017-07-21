@@ -10,8 +10,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
 import javax.sql.rowset.CachedRowSet;
@@ -29,6 +32,7 @@ public class SQLQueryWindowController extends Controller {
     private Connection connection;
     private TableInfo tableInfo;
     private int tabsCounter = 1;
+    private Image loadingGifImage = new Image("images/loading.gif");
     
     private ThreadsController threadsController = new ThreadsController();
     
@@ -39,12 +43,50 @@ public class SQLQueryWindowController extends Controller {
     private TabPane tabPane;
     
     @FXML
+    private Button firstActionButton;
+    
+    @FXML
+    private Button secondActionButton;
+    
+    @FXML
+    private Button thirdActionButton;
+    
+    @FXML
+    private Button fourthActionButton;
+    
+    @FXML
+    private ImageView loadingGif;
+    
+    @FXML
     public void initialize() {
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
+        ImageView imageViews[] = new ImageView[4];
+        String imagesPaths[] = { "images/run.png", "images/delete.png", "images/configuration.png",
+                "images/backup.png"};
+        
+        int i = 0;
+        double fitWidth = 30, fitHeight = 30;
+        for (String path : imagesPaths) {
+            imageViews[i] = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(path)));
+            imageViews[i].setFitWidth(fitWidth);
+            imageViews[i].setFitHeight(fitHeight);
+            i++;
+        }
+        firstActionButton.setGraphic(imageViews[0]);
+        secondActionButton.setGraphic(imageViews[1]);
+        thirdActionButton.setGraphic(imageViews[2]);
+        fourthActionButton.setGraphic(imageViews[3]);
+        
+        loadingGif.setImage(null);
     }
     
     @FXML
     public void menuBarProcessQueryClicked() {
+        startProcessQueryClicked();
+    }
+    
+    private void startProcessQueryClicked() {
+        Platform.runLater(() -> loadingGif.setImage(loadingGifImage));
         String sqlQuery = queryTextArea.getText();
         Thread queryThread = new Thread(() -> processQuery(sqlQuery));
         threadsController.addThread(queryThread);
@@ -60,6 +102,7 @@ public class SQLQueryWindowController extends Controller {
             tabsCounter++;
             Platform.runLater(() -> displayResults(new TableView<>(), tab, cachedRowSet));
         }
+        Platform.runLater(() -> loadingGif.setImage(null));
     }
     
     private void displayResults(TableView<ObservableList> tableView, Tab tab, CachedRowSet cachedRowSet) {
@@ -149,7 +192,7 @@ public class SQLQueryWindowController extends Controller {
     }
     
     @Override
-    public void exit() {
+    public void closeWindow() {
         MainWindowController.setIsSQLQueryWindowOpen(false);
         threadsController.killThreads();
         stage.close();
@@ -169,6 +212,27 @@ public class SQLQueryWindowController extends Controller {
             }
         }
         
-        return resultsReady ? 0 : 1;
+        return !resultsReady;
+    }
+    
+    public void firstActionButtonClicked() {
+        startProcessQueryClicked();
+    }
+    
+    public void secondActionButtonClicked(ActionEvent actionEvent) {
+        clearTabClicked();
+    }
+    
+    private void clearTabClicked() {
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        tabPane.getTabs().remove(selectionModel.getSelectedItem());
+    }
+    
+    public void thirdActionButtonClicked(ActionEvent actionEvent) {
+    
+    }
+    
+    public void fourthActionButtonClicked(ActionEvent actionEvent) {
+    
     }
 }

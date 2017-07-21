@@ -1,3 +1,19 @@
 .split-pane *.split-pane-divider {
     -fx-padding: 0 1 0 1;
 }
+
+.action-buttons {
+    -fx-background-color: white;
+}
+
+.action-buttons:hover {
+    -fx-background-color: #d2d7dd;
+}
+
+.action-buttons:pressed {
+    -fx-background-color: grey;
+}
+
+.text-area {
+    -fx-focus-color: transparent;
+}

@@ -18,9 +18,9 @@
          </font></Label>
       <TextField fx:id="baseAndServerNameField" layoutX="95.0" layoutY="105.0" onAction="#baseAndHostNameEntered" onKeyReleased="#baseAndHostNameEntered" promptText="Serwer : Nazwa bazy" styleClass="text-field" stylesheets="@../css/loginWindowStyles.css" />
       <TextField fx:id="userNameField" layoutX="95.0" layoutY="144.0" onAction="#userNameEntered" onKeyReleased="#userNameEntered" promptText="Użytkownik" styleClass="text-field" stylesheets="@../css/loginWindowStyles.css" />
-      <PasswordField fx:id="passwordField" layoutX="95.0" layoutY="184.0" onAction="#login" onKeyReleased="#passwordEntered" promptText="Hasło" styleClass="text-field" />
-      <Button layoutX="157.0" layoutY="260.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="113.0" styleClass="button" stylesheets="@../css/loginWindowStyles.css" text="Zaloguj"/>
-      <Button layoutX="64.0" layoutY="260.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="77.0" styleClass="button" stylesheets="@../css/loginWindowStyles.css" text="Anuluj"/>
+      <PasswordField fx:id="passwordField" layoutX="95.0" layoutY="184.0" onAction="#loginButtonClicked" onKeyReleased="#passwordEntered" promptText="Hasło" styleClass="text-field" />
+      <Button layoutX="157.0" layoutY="260.0" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="30.0" prefWidth="113.0" styleClass="button" stylesheets="@../css/loginWindowStyles.css" text="Zaloguj"/>
+      <Button layoutX="64.0" layoutY="260.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="30.0" prefWidth="77.0" styleClass="button" stylesheets="@../css/loginWindowStyles.css" text="Anuluj"/>
       <Label fx:id="errorLabel" layoutX="82.0" layoutY="303.0" prefHeight="17.0" prefWidth="177.0" styleClass="error-label" stylesheets="@../css/loginWindowStyles.css" textAlignment="CENTER" textFill="#ff5300" />
       <ImageView fitHeight="30.0" fitWidth="34.0" layoutX="64.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../images/login/db.png" />

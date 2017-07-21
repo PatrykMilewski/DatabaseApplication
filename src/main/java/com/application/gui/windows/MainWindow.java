@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -19,16 +20,20 @@ public class MainWindow extends Application {
     
     private FXMLLoader loader;
     private MainWindowController controller;
+    private Stage stage;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
+        stage = primaryStage;
         loader = new FXMLLoader(fxmlUrl);
         Parent root = loader.load();
         controller = loader.getController();
-        primaryStage.setScene(new Scene(root));
-        primaryStage.setMinWidth(400);
-        primaryStage.setMinHeight(200);
-        primaryStage.show();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Baza danych");
+        stage.setMinWidth(400);
+        stage.setMinHeight(200);
+        setIcon();
+        stage.show();
     }
     
     
@@ -36,6 +41,10 @@ public class MainWindow extends Application {
     public void stop() {
         controller.closeApplication();
         System.exit(0);
+    }
+    
+    private void setIcon() {
+        stage.getIcons().add(new Image("images/logo.png"));
     }
     
     public static void main(String[] args) {

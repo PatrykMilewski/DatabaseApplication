@@ -2,6 +2,7 @@ package com.application.gui.windows;
 
 import com.application.gui.controllers.Controller;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public abstract class Window {
@@ -11,5 +12,9 @@ public abstract class Window {
     
     public Controller getController() {
         return controller;
+    }
+    
+    void setIcon() {
+        stage.getIcons().add(new Image("images/logo.png"));
     }
 }
