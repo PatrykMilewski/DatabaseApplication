@@ -18,14 +18,13 @@ public class MainWindow extends Application {
     
     private final URL fxmlUrl = getClass().getResource("/fxml/mainWindow.fxml");
     
-    private FXMLLoader loader;
     private MainWindowController controller;
     private Stage stage;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
-        loader = new FXMLLoader(fxmlUrl);
+        FXMLLoader loader = new FXMLLoader(fxmlUrl);
         Parent root = loader.load();
         controller = loader.getController();
         stage.setScene(new Scene(root));

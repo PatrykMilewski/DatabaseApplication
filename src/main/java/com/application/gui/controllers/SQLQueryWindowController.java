@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 
 public class SQLQueryWindowController extends Controller {
     
-    private static final double ACTIONBUTTONWIDTH = 30;
-    private static final double ACTIONBUTTONHEIGHT = 30;
+    private static final double ACTION_BUTTON_WIDTH = 30;
+    private static final double ACTION_BUTTON_HEIGHT = 30;
     private static Logger log = LoggerFactory.getLogger(MainWindowController.class.getCanonicalName());
     
     private Connection connection;
@@ -48,11 +48,10 @@ public class SQLQueryWindowController extends Controller {
     
         int i = 0;
         for (Button button : actionButtons) {
-            ImageView imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(imagesPaths[i])));
-            imageView.setFitWidth(ACTIONBUTTONWIDTH);
-            imageView.setFitHeight(ACTIONBUTTONHEIGHT);
-            button.setGraphic(imageView);
+            setImageOnButton(button, imagesPaths[i], ACTION_BUTTON_WIDTH, ACTION_BUTTON_HEIGHT);
             i++;
+            if (i >= imagesPaths.length)
+                break;
         }
         
         loadingGif.setImage(null);
@@ -97,7 +96,7 @@ public class SQLQueryWindowController extends Controller {
     
     @Override
     public void closeWindow() {
-        MainWindowController.setIsSQLQueryWindowOpen(false);
+        MainWindowController.sqlQueryWindowClosed();
         threadsController.killThreads();
         stage.close();
     }

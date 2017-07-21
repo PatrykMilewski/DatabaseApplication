@@ -8,10 +8,10 @@ import java.sql.SQLException;
 
 public class MySQLConnection {
     
-    private final static int SQLPORT = 3306;
+    private final static int SQL_PORT = 3306;
     
     private MysqlDataSource dataSource;
-    private Connection dbcon;
+    private Connection dbCon;
     
     public MySQLConnection(String user, String password, String serverName, String baseName) {
         dataSource = new MysqlDataSource();
@@ -20,16 +20,16 @@ public class MySQLConnection {
         dataSource.setPassword(password);
         dataSource.setServerName(serverName);
         dataSource.setDatabaseName(baseName);
-        dataSource.setPort(SQLPORT);
+        dataSource.setPort(SQL_PORT);
     }
     
     public void connectToDatabase() throws SQLException {
-        dbcon = dataSource.getConnection();
+        dbCon = dataSource.getConnection();
     }
     
     
-    public Connection getDbcon() {
-        return dbcon;
+    public Connection getDBCon() {
+        return dbCon;
     }
     
 }

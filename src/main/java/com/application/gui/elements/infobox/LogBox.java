@@ -11,13 +11,13 @@ import java.util.logging.Logger;
 
 public class LogBox extends Thread {
     
-    private final static String LEVELCOLORS[] = new String[3];
+    private final static String LEVEL_COLORS[] = new String[3];
     private static Logger log;
 
     static {
-        LEVELCOLORS[0] = "red";
-        LEVELCOLORS[1] = "black";
-        LEVELCOLORS[2] = "black";
+        LEVEL_COLORS[0] = "red";
+        LEVEL_COLORS[1] = "black";
+        LEVEL_COLORS[2] = "black";
         log = LoggerFactory.getLogger(LogBox.class.getCanonicalName());
     }
     
@@ -62,13 +62,13 @@ public class LogBox extends Thread {
     
     private void handleLog(SingleLog log) {
         Level type = log.getType();
-        this.log.log(Level.INFO, "Adding a new log with level " + log.getType().toString() + ".");
+        LogBox.log.log(Level.INFO, "Adding a new log with level " + log.getType().toString() + ".");
         if (type == Level.SEVERE)
-            Platform.runLater(() -> changeLabel(log.getText(), LEVELCOLORS[0]));
+            Platform.runLater(() -> changeLabel(log.getText(), LEVEL_COLORS[0]));
         else if (type == Level.WARNING)
-            Platform.runLater(() -> changeLabel(log.getText(), LEVELCOLORS[1]));
+            Platform.runLater(() -> changeLabel(log.getText(), LEVEL_COLORS[1]));
         else
-            Platform.runLater(() -> changeLabel(log.getText(), LEVELCOLORS[2]));
+            Platform.runLater(() -> changeLabel(log.getText(), LEVEL_COLORS[2]));
     }
     
     private void changeLabel(String text, String color) {

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public abstract class DataProcess {
     
-    private static final double COLUMNWIDTH = 100;
+    private static final double COLUMN_WIDTH = 100;
     
     private static Logger log = LoggerFactory.getLogger(DataProcess.class.getCanonicalName());
     
@@ -59,7 +59,7 @@ public abstract class DataProcess {
         return cachedRowSet;
     }
     
-    public static ObservableList<ObservableList> handleResultsSet(CachedRowSet cachedRowSet, TableInfo tableInfo)
+    private static ObservableList<ObservableList> handleResultsSet(CachedRowSet cachedRowSet, TableInfo tableInfo)
             throws SQLException {
         
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
@@ -89,12 +89,12 @@ public abstract class DataProcess {
         }
     }
     
-    public static void constructColumns(TableView<ObservableList> tableView, TableInfo tableInfo) {
+    private static void constructColumns(TableView<ObservableList> tableView, TableInfo tableInfo) {
         for (int i = 0; i < tableInfo.columnsCount; i++) {
             final int finalIterator = i;
             TableColumn<ObservableList, String> tableColumn = new TableColumn<>(tableInfo.columnNames[i]);
             //tableColumn.setPrefWidth(tableInfo.columnDisplaySize[i]);
-            tableColumn.setMaxWidth(COLUMNWIDTH);
+            tableColumn.setMaxWidth(COLUMN_WIDTH);
             
             Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>> callback =
                     param -> new SimpleStringProperty((param.getValue().get(finalIterator).toString()));

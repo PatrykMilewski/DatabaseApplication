@@ -13,6 +13,7 @@ import com.application.gui.windows.SQLQueryWindow;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import org.codehaus.plexus.util.FileUtils;
@@ -28,6 +29,8 @@ import java.util.logging.Logger;
 
 public class MainWindowController extends Controller {
     
+    private static final double FILTER_BUTTON_HEIGHT = 12;
+    private static final double FILTER_BUTTON_WIDTH = 12;
     private static Logger log = LoggerFactory.getLogger(MainWindowController.class.getCanonicalName());
     
     private static boolean isSQLQueryWindowOpen = false;
@@ -55,13 +58,8 @@ public class MainWindowController extends Controller {
     @FXML
     private ArrayList<ImageView> statusIcons;
     
-    static void setIsSQLQueryWindowOpen(boolean isSQLQueryWindowOpen) {
-        MainWindowController.isSQLQueryWindowOpen = isSQLQueryWindowOpen;
-    }
-    
-    static void setIsLoginWindowOpen(boolean isLoginWindowOpen) {
-        MainWindowController.isLoginWindowOpen = isLoginWindowOpen;
-    }
+    @FXML
+    private ArrayList<Button> filterButtons;
     
     @FXML
     public void initialize() {
@@ -70,6 +68,25 @@ public class MainWindowController extends Controller {
         threadsController = new ThreadsController();
         dataTableContextMenu = new DataTableContextMenu();
         filtersContextMenu = new FiltersContextMenu();
+        
+        String imagesPaths[] = { "images/plus.png", "images/minus.png" };
+        
+        int i = 0;
+        for (Button filterButton : filterButtons) {
+            setImageOnButton(filterButton, imagesPaths[i], FILTER_BUTTON_WIDTH, FILTER_BUTTON_HEIGHT);
+            
+            i++;
+            if (i >= imagesPaths.length)
+                break;
+        }
+    }
+    
+    static void sqlQueryWindowClosed() {
+        MainWindowController.isSQLQueryWindowOpen = false;
+    }
+    
+    static void loginWindowClosed() {
+        MainWindowController.isLoginWindowOpen = false;
     }
     
     @FXML

@@ -16,7 +16,7 @@ public class UserDataLoader {
     
     private static Logger log = LoggerFactory.getLogger(UserDataLoader.class.getCanonicalName());
     
-    private final static String SAVEDHOSTSNAME, SAVEDUSERSNAME;
+    private final static String SAVED_HOSTS_NAME, SAVED_USERS_NAME;
     
     private static Set<String> savedHosts;
     private static Set<String> savedUsers;
@@ -24,8 +24,8 @@ public class UserDataLoader {
     private static boolean lockLoadingData = false;
     
     static {
-        SAVEDHOSTSNAME = "hostsNamesSet.dat";
-        SAVEDUSERSNAME = "usersNamesSet.dat";
+        SAVED_HOSTS_NAME = "hostsNamesSet.dat";
+        SAVED_USERS_NAME = "usersNamesSet.dat";
         
         savedHosts = new LinkedHashSet<>();
         savedUsers = new LinkedHashSet<>();
@@ -49,8 +49,8 @@ public class UserDataLoader {
         String dataPath = Paths.get(appData, artifactId, version).toString();
         System.out.println(dataPath);
         
-        String hostsDataPath = Paths.get(dataPath, SAVEDHOSTSNAME).toString();
-        String usersDataPath = Paths.get(dataPath, SAVEDUSERSNAME).toString();
+        String hostsDataPath = Paths.get(dataPath, SAVED_HOSTS_NAME).toString();
+        String usersDataPath = Paths.get(dataPath, SAVED_USERS_NAME).toString();
         
         try (ObjectInputStream objectInputStream =
                      new ObjectInputStream(new FileInputStream(hostsDataPath))) {
@@ -96,8 +96,8 @@ public class UserDataLoader {
         String appData = System.getenv("APPDATA");
         String dataPath = Paths.get(appData, model.getArtifactId(), model.getVersion()).toString();
         
-        String hostsDataPath = Paths.get(dataPath, SAVEDHOSTSNAME).toString();
-        String usersDataPath = Paths.get(dataPath, SAVEDUSERSNAME).toString();
+        String hostsDataPath = Paths.get(dataPath, SAVED_HOSTS_NAME).toString();
+        String usersDataPath = Paths.get(dataPath, SAVED_USERS_NAME).toString();
         
         try {
             Files.createDirectories(Paths.get(dataPath));

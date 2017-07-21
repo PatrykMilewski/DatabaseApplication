@@ -9,7 +9,6 @@ import javafx.scene.layout.Priority;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Statement;
 
 public abstract class MyAlerts {
     

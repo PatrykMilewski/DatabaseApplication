@@ -10,7 +10,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.control.ToggleSwitch;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ public class LoginWindowController extends Controller {
     
     private static Logger log = LoggerFactory.getLogger(LoginWindowController.class.getCanonicalName());
 
-    private static final int AUTOCOMPLETIONDELAY = 30;
+    private static final int AUTOCOMPLETION_DELAY = 30;
     
     private static ThreadsController threadsController = new ThreadsController();
     private static UserDataLoader userDataLoader = new UserDataLoader();
@@ -52,10 +51,10 @@ public class LoginWindowController extends Controller {
         resultsReady = false;
         loadUserSettingsFromFile();
         if (savedUsers != null)
-            TextFields.bindAutoCompletion(userNameField, savedUsers).setDelay(AUTOCOMPLETIONDELAY);
+            TextFields.bindAutoCompletion(userNameField, savedUsers).setDelay(AUTOCOMPLETION_DELAY);
         
         if (savedHosts != null)
-            TextFields.bindAutoCompletion(baseAndServerNameField, savedHosts).setDelay(AUTOCOMPLETIONDELAY);
+            TextFields.bindAutoCompletion(baseAndServerNameField, savedHosts).setDelay(AUTOCOMPLETION_DELAY);
     }
     
     @FXML
@@ -126,13 +125,14 @@ public class LoginWindowController extends Controller {
     
     private String translateLoginError(int code) {
         switch (code) {
+            case 1045: return "odmowa dostępu (1045)";
             default: return "nieznany kod błędu (" + code + ")";
         }
     }
     
     @Override
     public synchronized void closeWindow() {
-        MainWindowController.setIsLoginWindowOpen(false);
+        MainWindowController.loginWindowClosed();
         resultsReady = true;
         notifyAll();
         threadsController.killThreads();
@@ -149,7 +149,7 @@ public class LoginWindowController extends Controller {
             }
         }
         
-        return (resultsReady && !loginCancelled) ? databaseConnection.getDbcon() : null;
+        return (resultsReady && !loginCancelled) ? databaseConnection.getDBCon() : null;
     }
     
     public void setStage(Stage stage) {

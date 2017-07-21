@@ -7,10 +7,15 @@
     -fx-faint-focus-color: transparent;
 }
 
-.filters-buttons {
-    -fx-background-color: #d2d7dd;
-    -fx-border-color: transparent;
+.filter-buttons {
+    -fx-background-color: #ddddd;
+    -fx-border-color: black;
     -fx-border-radius: 0;
+    -fx-focus-color: trasparent;
+}
+
+.filter-buttons:pressed {
+    -fx-background-color: darkgray;
 }
 
 .split-pane *.split-pane-divider {
