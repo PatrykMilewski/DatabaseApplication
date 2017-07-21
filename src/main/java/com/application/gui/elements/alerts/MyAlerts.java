@@ -1,5 +1,6 @@
 package com.application.gui.elements.alerts;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -84,9 +85,9 @@ public abstract class MyAlerts {
     
     private static void showAndWait(Alert alert, boolean wait) {
         if (wait)
-            alert.showAndWait();
+            Platform.runLater(alert::showAndWait);
         else
-            alert.show();
+            Platform.runLater(alert::show);
     }
     
 }

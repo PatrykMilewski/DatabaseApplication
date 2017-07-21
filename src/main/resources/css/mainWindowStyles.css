@@ -6,3 +6,18 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+
+.filters-buttons {
+    -fx-background-color: #d2d7dd;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+}
+
+.split-pane *.split-pane-divider {
+    -fx-padding: 0 1 0 1;
+}
+
+.status-icons {
+    -fx-background-color: black;
+    -fx-fill-color: black;
+}

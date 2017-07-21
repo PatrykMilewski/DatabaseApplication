@@ -32,7 +32,4 @@ public class MySQLConnection {
         return dbcon;
     }
     
-    public void setDbcon(Connection dbcon) {
-        this.dbcon = dbcon;
-    }
 }

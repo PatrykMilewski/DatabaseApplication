@@ -13,7 +13,8 @@ import com.application.gui.windows.SQLQueryWindow;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.apache.maven.model.Model;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,24 +42,18 @@ public class MainWindowController extends Controller {
     private Contextable dataTableContextMenu, filtersContextMenu;
     
     private boolean connectedToDatabase = false;
-    
+
     @FXML
-    private MenuBar menuBar;
-    
-    @FXML
-    private ScrollPane filtersPane;
-    
-    @FXML
-    private ScrollPane dataPane;
-    
-    @FXML
-    private TableView dataTable;
+    private TabPane tabPane;
     
     @FXML
     private ListView filtersList;
     
     @FXML
     private Label logLabel;
+    
+    @FXML
+    private ArrayList<ImageView> statusIcons;
     
     static void setIsSQLQueryWindowOpen(boolean isSQLQueryWindowOpen) {
         MainWindowController.isSQLQueryWindowOpen = isSQLQueryWindowOpen;
@@ -96,9 +92,8 @@ public class MainWindowController extends Controller {
     
     @FXML
     public void resetSettings() {
-        Model model = ConstValues.getModel();
         String appData = System.getenv("APPDATA");
-        String dataPath = Paths.get(appData, model.getArtifactId(), model.getVersion()).toString();
+        String dataPath = Paths.get(appData, ConstValues.getArtifactId(), ConstValues.getVersion()).toString();
     
         try {
             FileUtils.deleteDirectory(new File(dataPath));
@@ -113,15 +108,17 @@ public class MainWindowController extends Controller {
         closeDBConnection(true);
     }
     
-    @FXML
-    public void showDataTableContextMenu() {
-        dataTable.setContextMenu(dataTableContextMenu.getContextMenu());
-    }
+    // todo make context menus for single tables and rows
     
-    @FXML
-    public void showFiltersContextMenu() {
-        filtersList.setContextMenu(filtersContextMenu.getContextMenu());
-    }
+//    @FXML
+//    public void showDataTableContextMenu(ActionEvent event) {
+//        dataPane.setContextMenu(dataTableContextMenu.getContextMenu(event));
+//    }
+//
+//    @FXML
+//    public void showFiltersContextMenu(ActionEvent event) {
+//        filtersList.setContextMenu(filtersContextMenu.getContextMenu(event));
+//    }
     
     @FXML
     public void menuBarCloseAction() {
@@ -229,5 +226,9 @@ public class MainWindowController extends Controller {
     @Override
     Object getResult() {
         return null;
+    }
+    
+    public void showFiltersContextMenu(ContextMenuEvent contextMenuEvent) {
+    
     }
 }

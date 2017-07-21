@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
+<?import java.util.ArrayList?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.SQLQueryWindowController">
     <stylesheets>
         <URL value="@../css/sqlQueryWindowStyles.css" />
@@ -49,7 +50,7 @@
       </MenuBar>
    </top>
    <bottom>
-      <TabPane fx:id="tabPane" prefHeight="297.0" prefWidth="931.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
+      <TabPane fx:id="tabPane" prefHeight="297.0" prefWidth="931.0" tabClosingPolicy="SELECTED_TAB" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
       <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -60,10 +61,10 @@
                </children></AnchorPane>
           <AnchorPane maxWidth="60.0" minHeight="0.0" minWidth="60.0" prefWidth="60.0">
                <children>
-                  <Button id="first-action-button" fx:id="firstActionButton" layoutX="8.0" layoutY="20.0" mnemonicParsing="false" onAction="#firstActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
-                  <Button id="second-action-button" fx:id="secondActionButton" layoutX="8.0" layoutY="74.0" mnemonicParsing="false" onAction="#secondActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
-                  <Button id="third-action-button" fx:id="thirdActionButton" layoutX="8.0" layoutY="127.0" mnemonicParsing="false" onAction="#thirdActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
-                  <Button id="fourth-action-button" fx:id="fourthActionButton" layoutX="8.0" layoutY="181.0" mnemonicParsing="false" onAction="#fourthActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
+                   <Button fx:id="actionButton1" layoutX="8.0" layoutY="20.0" mnemonicParsing="false" onAction="#firstActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
+                   <Button fx:id="actionButton2" layoutX="8.0" layoutY="74.0" mnemonicParsing="false" onAction="#secondActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
+                   <Button fx:id="actionButton3" layoutX="8.0" layoutY="127.0" mnemonicParsing="false" onAction="#thirdActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
+                   <Button fx:id="actionButton4" layoutX="8.0" layoutY="181.0" mnemonicParsing="false" onAction="#fourthActionButtonClicked" prefHeight="45.0" prefWidth="45.0" styleClass="action-buttons" />
                   <ImageView fx:id="loadingGif" fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/loading.gif" />
@@ -74,4 +75,13 @@
         </items>
       </SplitPane>
    </center>
+
+    <fx:define>
+        <ArrayList fx:id="actionButtons">
+            <fx:reference source="actionButton1"/>
+            <fx:reference source="actionButton2"/>
+            <fx:reference source="actionButton3"/>
+            <fx:reference source="actionButton4"/>
+        </ArrayList>
+    </fx:define>
 </BorderPane>

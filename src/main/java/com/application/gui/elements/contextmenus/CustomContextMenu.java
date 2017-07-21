@@ -3,6 +3,8 @@ package com.application.gui.elements.contextmenus;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
+import java.awt.event.ActionEvent;
+
 abstract class CustomContextMenu implements Contextable {
     
     final ContextMenu contextMenu;
@@ -14,7 +16,7 @@ abstract class CustomContextMenu implements Contextable {
     }
     
     @Override
-    public ContextMenu getContextMenu() {
+    public ContextMenu getContextMenu(ActionEvent event) {
         return contextMenu;
     }
 }

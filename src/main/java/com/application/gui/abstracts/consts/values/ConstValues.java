@@ -23,11 +23,24 @@ public final class ConstValues {
             model = reader.read(new FileReader("pom.xml"));
         } catch (IOException | XmlPullParserException e) {
             model = null;
-            e.printStackTrace();
         }
     }
 
     public static Model getModel() {
         return model;
+    }
+    
+    public static String getArtifactId() {
+        if (model == null)
+            return ARTIFACTID;
+        else
+            return model.getArtifactId();
+    }
+    
+    public static String getVersion() {
+        if (model == null)
+            return VERSION;
+        else
+            return model.getVersion();
     }
 }
