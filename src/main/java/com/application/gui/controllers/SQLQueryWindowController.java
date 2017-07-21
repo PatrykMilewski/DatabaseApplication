@@ -85,6 +85,11 @@ public class SQLQueryWindowController extends Controller {
         startProcessQueryClicked();
     }
     
+    @FXML
+    public void menuBarCloseTabClicked() {
+        clearTab();
+    }
+    
     private void startProcessQueryClicked() {
         Platform.runLater(() -> loadingGif.setImage(loadingGifImage));
         String sqlQuery = queryTextArea.getText();
@@ -220,12 +225,13 @@ public class SQLQueryWindowController extends Controller {
     }
     
     public void secondActionButtonClicked(ActionEvent actionEvent) {
-        clearTabClicked();
+        clearTab();
     }
     
-    private void clearTabClicked() {
+    private void clearTab() {
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-        tabPane.getTabs().remove(selectionModel.getSelectedItem());
+        if (!tabPane.getTabs().isEmpty())
+            tabPane.getTabs().remove(selectionModel.getSelectedItem());
     }
     
     public void thirdActionButtonClicked(ActionEvent actionEvent) {

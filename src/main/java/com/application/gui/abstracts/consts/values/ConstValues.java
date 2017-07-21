@@ -14,6 +14,8 @@ public final class ConstValues {
     
     public static final String USERDATAFILE = "data/users/";
     private static Model model;
+    public static final String ARTIFACTID = "DatabaseApplication";
+    public static final String VERSION = "0.1-ALFA";
     
     static {
         model = null;
@@ -24,8 +26,7 @@ public final class ConstValues {
             e.printStackTrace();
         }
     }
-    
-    
+
     public static Model getModel() {
         return model;
     }

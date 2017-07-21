@@ -23,17 +23,22 @@
         <menus>
           <Menu mnemonicParsing="false" text="Plik">
             <items>
+              <MenuItem mnemonicParsing="false" text="Empty" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Akcje">
+               <items>
               <MenuItem mnemonicParsing="false" onAction="#menuBarProcessQueryClicked" text="Wywołaj">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edytuj">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Empty" />
-            </items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuBarCloseTabClicked" text="Zamknij">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+               </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Pomoc">
             <items>

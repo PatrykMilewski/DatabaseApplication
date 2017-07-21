@@ -45,7 +45,13 @@ public class UserDataLoader {
     
         Model model = ConstValues.getModel();
         String appData = System.getenv("APPDATA");
-        String dataPath = Paths.get(appData, model.getArtifactId(), model.getVersion()).toString();
+        String artifactId = ConstValues.ARTIFACTID, version = ConstValues.VERSION;
+        if (model != null) {
+            artifactId = model.getArtifactId();
+            version = model.getVersion();
+        }
+        String dataPath = Paths.get(appData, artifactId, version).toString();
+        System.out.println(dataPath);
         
         String hostsDataPath = Paths.get(dataPath, SAVEDHOSTSNAME).toString();
         String usersDataPath = Paths.get(dataPath, SAVEDUSERSNAME).toString();
