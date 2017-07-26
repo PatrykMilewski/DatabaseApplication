@@ -26,16 +26,16 @@
                         <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#menuBarCloseAction" text="Zamknij" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuBarActionCloseApplication" text="Zamknij" />
                     </items>
                 </Menu>
             <Menu mnemonicParsing="false" text="Połączenie">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#connectToDatabase" text="Połącz z bazą danych">
+                  <MenuItem mnemonicParsing="false" onAction="#menuBarActionOpenLoginWindow" text="Połącz z bazą danych">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#disconnectFromDatabase" text="Rozłącz z bazą danych">
+                  <MenuItem mnemonicParsing="false" onAction="#menuBarActionDisconnectFromDB" text="Rozłącz z bazą danych">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
@@ -48,7 +48,7 @@
                 </Menu>
             <Menu mnemonicParsing="false" text="Ustawienia">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#resetSettings" text="Resetuj" />
+                <MenuItem mnemonicParsing="false" onAction="#menuBarActionResetSettings" text="Resetuj" />
               </items>
             </Menu>
                 <Menu mnemonicParsing="false" text="Pomoc">

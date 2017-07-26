@@ -1,8 +1,10 @@
 package com.application.gui.controllers;
 
+import com.application.gui.abstracts.consts.enums.SpotStances;
 import com.application.gui.abstracts.consts.values.ConstValues;
 import com.application.gui.abstracts.exceptions.FailedToConnectToDatabase;
 import com.application.gui.abstracts.factories.LoggerFactory;
+import com.application.gui.elements.containers.IconSpotsContainer;
 import com.application.gui.elements.contextmenus.Contextable;
 import com.application.gui.elements.controllers.ThreadsController;
 import com.application.gui.elements.contextmenus.DataTableContextMenu;
@@ -31,6 +33,7 @@ public class MainWindowController extends Controller {
     
     private static final double FILTER_BUTTON_HEIGHT = 12;
     private static final double FILTER_BUTTON_WIDTH = 12;
+    
     private static Logger log = LoggerFactory.getLogger(MainWindowController.class.getCanonicalName());
     
     private static boolean isSQLQueryWindowOpen = false;
@@ -40,6 +43,7 @@ public class MainWindowController extends Controller {
     private LoginWindow loginWindow;
     private SQLQueryWindow sqlQueryWindow;
     private LogBox logBox;
+    private IconSpotsContainer iconSpotsContainer;
     
     private Connection databaseConnection;
     private Contextable dataTableContextMenu, filtersContextMenu;
@@ -61,6 +65,16 @@ public class MainWindowController extends Controller {
     @FXML
     private ArrayList<Button> filterButtons;
     
+    //////////////////////////
+    //                      //
+    //   PUBLIC METHODS     //
+    //                      //
+    //////////////////////////
+    
+    //*****************************************************************************************************************/
+    //  JavaFX business logic
+    //*****************************************************************************************************************/
+    
     @FXML
     public void initialize() {
         resultsReady = true;
@@ -68,6 +82,7 @@ public class MainWindowController extends Controller {
         threadsController = new ThreadsController();
         dataTableContextMenu = new DataTableContextMenu();
         filtersContextMenu = new FiltersContextMenu();
+        iconSpotsContainer = new IconSpotsContainer();
         
         String imagesPaths[] = { "images/plus.png", "images/minus.png" };
         
@@ -79,18 +94,16 @@ public class MainWindowController extends Controller {
             if (i >= imagesPaths.length)
                 break;
         }
+        
+        initializeIcons();
     }
     
-    static void sqlQueryWindowClosed() {
-        MainWindowController.isSQLQueryWindowOpen = false;
-    }
-    
-    static void loginWindowClosed() {
-        MainWindowController.isLoginWindowOpen = false;
-    }
+    //*****************************************************************************************************************/
+    //  Interface connected methods
+    //*****************************************************************************************************************/
     
     @FXML
-    public void connectToDatabase() {
+    public void menuBarActionOpenLoginWindow() {
         if (isLoginWindowOpen) {
             addLog(Level.SEVERE, "Okno logowania jest już otwarte.");
             return;
@@ -105,41 +118,6 @@ public class MainWindowController extends Controller {
         } catch (IOException e) {
             addLog(Level.SEVERE, "Nie udało się otworzyć okna logowania.", e);
         }
-    }
-    
-    @FXML
-    public void resetSettings() {
-        String appData = System.getenv("APPDATA");
-        String dataPath = Paths.get(appData, ConstValues.getArtifactId(), ConstValues.getVersion()).toString();
-    
-        try {
-            FileUtils.deleteDirectory(new File(dataPath));
-            addLog(Level.INFO, "Usunięto dane aplikacji.");
-        } catch (IOException e) {
-            addLog(Level.SEVERE, "Nie udało się usunąć danych aplikacji.", e);
-        }
-    }
-    
-    @FXML
-    public void disconnectFromDatabase() {
-        closeDBConnection(true);
-    }
-    
-    // todo make context menus for single tables and rows
-    
-//    @FXML
-//    public void showDataTableContextMenu(ActionEvent event) {
-//        dataPane.setContextMenu(dataTableContextMenu.getContextMenu(event));
-//    }
-//
-//    @FXML
-//    public void showFiltersContextMenu(ActionEvent event) {
-//        filtersList.setContextMenu(filtersContextMenu.getContextMenu(event));
-//    }
-    
-    @FXML
-    public void menuBarCloseAction() {
-        closeApplication();
     }
     
     @FXML
@@ -160,32 +138,87 @@ public class MainWindowController extends Controller {
         }
     }
     
-    private void waitForDBQueryWindow() {
-        sqlQueryWindow.getController().getResult();
-        addLog(Level.INFO, "Zamknięto okno SQL Query.");
+    @FXML
+    public void menuBarActionDisconnectFromDB() {
+        closeDBConnection(true);
     }
     
-    private void waitForDBConnection() {
-        try {
-            databaseConnection = (Connection) loginWindow.getController().getResult();
-            
-            if (databaseConnection == null)
-                throw new FailedToConnectToDatabase();
-            
-            addLog(Level.INFO, "Połączono z bazą danych.");
-            connectedToDatabase = true;
-            return;
-        }
-        catch (FailedToConnectToDatabase e) {
-            addLog(Level.WARNING, "Nie udało się połączyć z bazą danych.");
-        } catch (Exception e) {
-            addLog(Level.SEVERE, "Błąd aplikacji.", e);
-        }
+    @FXML
+    public void menuBarActionResetSettings() {
+        String appData = System.getenv("APPDATA");
+        String dataPath = Paths.get(appData, ConstValues.getArtifactId(), ConstValues.getVersion()).toString();
         
-        closeDBConnection(false);
-        connectedToDatabase = false;
+        try {
+            FileUtils.deleteDirectory(new File(dataPath));
+            addLog(Level.INFO, "Usunięto dane aplikacji.");
+        } catch (IOException e) {
+            addLog(Level.SEVERE, "Nie udało się usunąć danych aplikacji.", e);
+        }
     }
     
+    @FXML
+    public void menuBarActionCloseApplication() {
+        closeApplication();
+    }
+    
+    @FXML
+    public void showFiltersContextMenu(ContextMenuEvent contextMenuEvent) {
+    
+    }
+    
+    // todo make context menus for single tables and rows
+
+//    @FXML
+//    public void showDataTableContextMenu(ActionEvent event) {
+//        dataPane.setContextMenu(dataTableContextMenu.getContextMenu(event));
+//    }
+//
+//    @FXML
+//    public void showFiltersContextMenu(ActionEvent event) {
+//        filtersList.setContextMenu(filtersContextMenu.getContextMenu(event));
+//    }
+    
+    
+    
+    //////////////////////////
+    //                      //
+    //   PROTECTED METHODS  //
+    //                      //
+    //////////////////////////
+    
+    //*****************************************************************************************************************/
+    //  Overridden
+    //*****************************************************************************************************************/
+    
+    @Override
+    Object getResult() {
+        return null;
+    }
+    
+    //*****************************************************************************************************************/
+    //  Communication with other windows
+    //*****************************************************************************************************************/
+    
+    static void sqlQueryWindowClosed() {
+        MainWindowController.isSQLQueryWindowOpen = false;
+    }
+    
+    static void loginWindowClosed() {
+        MainWindowController.isLoginWindowOpen = false;
+    }
+    
+    
+    
+    
+    //////////////////////////
+    //                      //
+    //   PRIVATE METHODS    //
+    //                      //
+    //////////////////////////
+    
+    //*****************************************************************************************************************/
+    //  Logging
+    //*****************************************************************************************************************/
     
     private void addLog(Level level, String message) {
         startLogBox();
@@ -200,19 +233,16 @@ public class MainWindowController extends Controller {
         log.log(level, e.getMessage(), e);
     }
     
-    private void addLog(String message, Level level, String logMessage) {
-        startLogBox();
-        
-        logBox.addLog(message, level);
-        log.log(level, logMessage);
-    }
-    
     private void startLogBox() {
         if (!logBox.isAlive()) {
             logBox.start();
             threadsController.addThread(logBox);
         }
     }
+    
+    //*****************************************************************************************************************/
+    //  Operations on application as JavaFX Application
+    //*****************************************************************************************************************/
     
     public void closeApplication() {
         threadsController.killThreads();
@@ -223,6 +253,22 @@ public class MainWindowController extends Controller {
             sqlQueryWindow.getController().closeWindow();
         
         Platform.exit();
+    }
+    
+    //*****************************************************************************************************************/
+    //  Business logic - DB login and connection
+    //*****************************************************************************************************************/
+    
+    private void connectedToDatabase(boolean result) {
+        connectedToDatabase = result;
+        
+        if (result)
+            addLog(Level.INFO, "Połączono z bazą danych.");
+        
+        else
+            addLog(Level.INFO, "Nie połączono z bazą danych.");
+        
+        setIcon(SpotStances.CONNECTION, result);
     }
     
     private void closeDBConnection(boolean verbose) {
@@ -240,12 +286,50 @@ public class MainWindowController extends Controller {
             addLog(Level.SEVERE,"Nie jesteś połączony do żadnej bazy danych.");
     }
     
-    @Override
-    Object getResult() {
-        return null;
+    private void waitForDBQueryWindow() {
+        sqlQueryWindow.getController().getResult();
+        addLog(Level.INFO, "Zamknięto okno SQL Query.");
     }
     
-    public void showFiltersContextMenu(ContextMenuEvent contextMenuEvent) {
+    private void waitForDBConnection() {
+        try {
+            databaseConnection = (Connection) loginWindow.getController().getResult();
+            
+            if (databaseConnection == null)
+                throw new FailedToConnectToDatabase();
+            
+            connectedToDatabase(true);
+            return;
+        }
+        catch (FailedToConnectToDatabase e) {
+            addLog(Level.WARNING, "Nie udało się połączyć z bazą danych.");
+        } catch (Exception e) {
+            addLog(Level.SEVERE, "Błąd aplikacji.", e);
+        }
+        
+        closeDBConnection(false);
+        connectedToDatabase(false);
+    }
     
+    //*****************************************************************************************************************/
+    //  JavaFX business logic
+    //*****************************************************************************************************************/
+    
+    private void initializeIcons() {
+        int i = 0;
+        for (ImageView icon : statusIcons) {
+            icon.setImage(
+                    new Image(getClass().getClassLoader().getResourceAsStream("images/icons/disconnected.png")));
+            i++;
+            if (i >= 1)
+                break;
+        }
+    }
+    
+    private void setIcon(SpotStances spot, boolean stance) {
+        int index = iconSpotsContainer.changeSpotStance(spot, stance);
+        Image image = iconSpotsContainer.getIconImage(spot);
+        
+        statusIcons.get(index).setImage(image);
     }
 }

@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,7 +54,6 @@ public class SQLQueryWindowController extends Controller {
             if (i >= imagesPaths.length)
                 break;
         }
-        
         loadingGif.setImage(null);
     }
     
@@ -95,9 +95,11 @@ public class SQLQueryWindowController extends Controller {
     }
     
     @Override
-    public void closeWindow() {
+    synchronized public void closeWindow() {
         MainWindowController.sqlQueryWindowClosed();
         threadsController.killThreads();
+        resultsReady = true;
+        notifyAll();
         stage.close();
     }
 
