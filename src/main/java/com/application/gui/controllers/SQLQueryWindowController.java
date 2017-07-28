@@ -80,8 +80,7 @@ public class SQLQueryWindowController extends Controller {
         
         for (String sqlCommand : queryAreaText.split(";")) {
             CachedRowSet cachedRowSet = DataProcess.processSQLCommand(connection, sqlCommand);
-            Tab tab = new Tab("Tabela " + tabsCounter);
-            tabsCounter++;
+            Tab tab = new Tab("Tabela " + tabsCounter++);
             Platform.runLater(() -> displayResults(new TableView<>(), tab, cachedRowSet));
         }
         Platform.runLater(() -> loadingGif.setImage(null));
@@ -135,7 +134,9 @@ public class SQLQueryWindowController extends Controller {
     }
     
     public void thirdActionButtonClicked(ActionEvent actionEvent) {
-    
+        for (Tab tab : tabPane.getTabs()) {
+            System.out.println(tab.getText());
+        }
     }
     
     public void fourthActionButtonClicked(ActionEvent actionEvent) {

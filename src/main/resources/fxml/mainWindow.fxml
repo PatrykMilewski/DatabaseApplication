@@ -68,7 +68,7 @@
    <bottom>
       <AnchorPane prefHeight="23.0" prefWidth="677.0" BorderPane.alignment="CENTER">
          <children>
-            <SplitPane dividerPositions="0.8516003879728419" minHeight="-Infinity" prefHeight="23.0" prefWidth="1033.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <SplitPane dividerPositions="0.85" minHeight="-Infinity" prefHeight="23.0" prefWidth="1033.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <items>
                 <AnchorPane minHeight="-Infinity" minWidth="0.0" prefHeight="23.0" prefWidth="100.0">
                      <children>
@@ -97,8 +97,8 @@
         <items>
           <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="168.0">
                <children>
-                  <Button fx:id="filterButton1" layoutX="5.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="filter-buttons" />
-                  <Button fx:id="filterButton2" layoutX="37.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="filter-buttons" />
+                  <Button fx:id="filterButton1" layoutX="5.0" layoutY="6.0" mnemonicParsing="false" onAction="#filterButtonActionAddNewFilter" prefHeight="30.0" prefWidth="30.0" styleClass="filter-buttons" />
+                  <Button fx:id="filterButton2" layoutX="37.0" layoutY="6.0" mnemonicParsing="false" onAction="#filterButtonActionDeleteFilter" prefHeight="30.0" prefWidth="30.0" styleClass="filter-buttons" />
                   <Button fx:id="filterButton3" layoutX="69.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="filter-buttons" />
                   <Button fx:id="filterButton4" layoutX="101.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="filter-buttons" />
                   <Button fx:id="filterButton5" layoutX="133.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="filter-buttons" />
@@ -128,11 +128,11 @@
 
     <fx:define>
         <ArrayList fx:id="filterButtons">
-            <fx:reference source="filterButton1"/>
-            <fx:reference source="filterButton2"/>
-            <fx:reference source="filterButton3"/>
-            <fx:reference source="filterButton4"/>
-            <fx:reference source="filterButton5"/>
+            <fx:reference source="filterButton1" />
+            <fx:reference source="filterButton2" />
+            <fx:reference source="filterButton3" />
+            <fx:reference source="filterButton4" />
+            <fx:reference source="filterButton5" />
         </ArrayList>
     </fx:define>
 

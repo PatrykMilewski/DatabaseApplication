@@ -47,37 +47,18 @@ public abstract class MyAlerts {
     }
     
     public static void showInfoAlert(String title, String header, String context, boolean wait) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        showAlert(Alert.AlertType.INFORMATION, title, header, context, wait);
+    }
+    
+    public static void showWarningAlert(String title, String header, String context, boolean wait) {
+        showAlert(Alert.AlertType.WARNING, title, header, context, wait);
+    }
+    
+    private static void showAlert(Alert.AlertType type, String title, String header, String context, boolean wait) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(context);
-    
-        showAndWait(alert, wait);
-    }
-    
-    public static void showInfoAlertMultipleSets(String result, boolean wait) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Wyświetlenie wyniku");
-        alert.setHeaderText("Pomyślnie wykonano polecenie SQL.");
-        alert.setContentText("Polecenie SQL jest nietypowe i jego wynik zostanie wyświetlony w tym oknie.");
-    
-        Label label = new Label("Wynik polecenia SQL został wyświetlony poniżej.");
-    
-        TextArea textArea = new TextArea(result);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-    
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
-    
-        GridPane expContent = new GridPane();
-        expContent.setMaxWidth(Double.MAX_VALUE);
-        expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
-
-        alert.getDialogPane().setExpandableContent(expContent);
     
         showAndWait(alert, wait);
     }

@@ -10,7 +10,6 @@
 .filter-buttons {
     -fx-border-color: black;
     -fx-border-radius: 0;
-    -fx-focus-color: trasparent;
 }
 
 .filter-buttons:pressed {
