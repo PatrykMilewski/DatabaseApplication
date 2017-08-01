@@ -1,13 +1,12 @@
 package com.application.gui.controllers;
 
-import com.application.database.sql.DataProcess;
+import com.application.database.sql.DataProcessor;
 import com.application.gui.abstracts.factories.LoggerFactory;
 import com.application.gui.elements.controllers.ThreadsController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,17 +17,18 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SQLQueryWindowController extends Controller {
+public class SQLQueryController extends Controller {
     
     private static final double ACTION_BUTTON_WIDTH = 30;
     private static final double ACTION_BUTTON_HEIGHT = 30;
     private static Logger log = LoggerFactory.getLogger(MainWindowController.class.getCanonicalName());
     
-    private Connection connection;
+    private Connection connection = null;
     private int tabsCounter = 1;
     private Image loadingGifImage = new Image("images/loading.gif");
     
     private ThreadsController threadsController = new ThreadsController();
+    private DataProcessor dataProcessor = null;
     
     @FXML
     private TextArea queryTextArea;
@@ -79,7 +79,7 @@ public class SQLQueryWindowController extends Controller {
         //todo remove old tabs from pane mechanism to avoid memory leak
         
         for (String sqlCommand : queryAreaText.split(";")) {
-            CachedRowSet cachedRowSet = DataProcess.processSQLCommand(connection, sqlCommand);
+            CachedRowSet cachedRowSet = dataProcessor.processSQLCommand(sqlCommand).getKey();
             Tab tab = new Tab("Tabela " + tabsCounter++);
             Platform.runLater(() -> displayResults(new TableView<>(), tab, cachedRowSet));
         }
@@ -90,12 +90,11 @@ public class SQLQueryWindowController extends Controller {
         tabPane.getTabs().add(tab);
         tab.setContent(tableView);
     
-        DataProcess.handleSingleResultSet(tableView, cachedRowSet);
+        dataProcessor.handleSingleResultSet(tableView, cachedRowSet);
     }
     
     @Override
     synchronized public void closeWindow() {
-        MainWindowController.sqlQueryWindowClosed();
         threadsController.killThreads();
         resultsReady = true;
         notifyAll();
@@ -103,7 +102,10 @@ public class SQLQueryWindowController extends Controller {
     }
 
     public void setConnection(Connection connection) {
-        this.connection = connection;
+        if (connection != null) {
+            this.connection = connection;
+            dataProcessor = new DataProcessor(connection);
+        }
     }
     
     @Override

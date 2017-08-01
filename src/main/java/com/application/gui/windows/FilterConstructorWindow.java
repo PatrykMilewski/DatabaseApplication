@@ -1,8 +1,7 @@
 package com.application.gui.windows;
 
 
-import com.application.gui.controllers.FilterConstructorWindowController;
-import com.application.gui.controllers.RawSQLFilterConstructorWindowController;
+import com.application.gui.controllers.FilterConstructorController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,13 +12,12 @@ import java.sql.Connection;
 
 public class FilterConstructorWindow extends Window {
     
-    public FilterConstructorWindow(Connection connection) throws IOException {
+    public FilterConstructorWindow() throws IOException {
         fxmlLoader = new FXMLLoader(getClass().getClassLoader()
                 .getResource("fxml/filterConstructorWindow.fxml"));
         
         Parent root = fxmlLoader.load();
         controller = fxmlLoader.getController();
-        ((FilterConstructorWindowController) controller).setConnection(connection);
         stage = new Stage();
         controller.setStage(stage);
         stage.setTitle("Zaawansowany konstruktor filtru.");

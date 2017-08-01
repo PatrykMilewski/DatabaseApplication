@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <?import java.util.ArrayList?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.SQLQueryWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.SQLQueryController">
     <stylesheets>
         <URL value="@../css/sqlQueryWindowStyles.css" />
     </stylesheets>
@@ -24,7 +24,10 @@
         <menus>
           <Menu mnemonicParsing="false" text="Plik">
             <items>
-              <MenuItem mnemonicParsing="false" text="Empty" />
+              <MenuItem mnemonicParsing="false" onAction="#closeWindow" text="Zamknij okno">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Akcje">
@@ -78,10 +81,10 @@
 
     <fx:define>
         <ArrayList fx:id="actionButtons">
-            <fx:reference source="actionButton1"/>
-            <fx:reference source="actionButton2"/>
-            <fx:reference source="actionButton3"/>
-            <fx:reference source="actionButton4"/>
+            <fx:reference source="actionButton1" />
+            <fx:reference source="actionButton2" />
+            <fx:reference source="actionButton3" />
+            <fx:reference source="actionButton4" />
         </ArrayList>
     </fx:define>
 </BorderPane>

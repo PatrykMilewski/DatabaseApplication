@@ -24,21 +24,28 @@ public class FiltersDataLoader {
         if (dataLoaded)
             return;
         
-        savedFilters = filtersLoader.loadData();
+        filtersLoader.loadData();
+        if (filtersLoader.getData() != null)
+            savedFilters = filtersLoader.getData();
         
         dataLoaded = true;
     }
     
     public void addNewData(DatabaseFilter newFilter) {
-        if (newFilter != null)
+        if (newFilter != null && !savedFilters.contains(newFilter))
             savedFilters.add(newFilter);
+    }
+    
+    public void removeData(DatabaseFilter filter) {
+        if (filter != null && savedFilters.contains(filter))
+            savedFilters.remove(filter);
     }
     
     public void saveData() {
         filtersLoader.saveData(savedFilters);
     }
     
-    public Set<DatabaseFilter> getSavedHosts() {
+    public Set<DatabaseFilter> getSavedFilters() {
         return savedFilters;
     }
 }

@@ -1,6 +1,6 @@
 package com.application.gui.windows;
 
-import com.application.gui.controllers.SQLQueryWindowController;
+import com.application.gui.controllers.SQLQueryController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +14,7 @@ public class SQLQueryWindow extends Window {
         fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/sqlQueryWindow.fxml"));
         Parent root = fxmlLoader.load();
         controller = fxmlLoader.getController();
-        ((SQLQueryWindowController) controller).setConnection(connection);
+        ((SQLQueryController) controller).setConnection(connection);
         stage = new Stage();
         controller.setStage(stage);
         stage.setTitle("SQL Query");

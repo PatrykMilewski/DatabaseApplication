@@ -2,7 +2,6 @@ package com.application.gui.controllers;
 
 
 import com.application.database.sql.DatabaseFilter;
-import com.application.gui.abstracts.exceptions.FailedToCreateRawSqlFilter;
 import com.application.gui.abstracts.factories.LoggerFactory;
 import com.application.gui.elements.alerts.MyAlerts;
 import com.application.gui.elements.controllers.ThreadsController;
@@ -17,18 +16,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FilterConstructorWindowController extends Controller {
+public class FilterConstructorController extends Controller {
     
     private static final String DEFAULT_FILTER_NAME = "Filtr ";
 
-    private static Logger log = LoggerFactory.getLogger(FilterConstructorWindowController.class.getCanonicalName());
+    private static Logger log = LoggerFactory.getLogger(FilterConstructorController.class.getCanonicalName());
     
     private static boolean rawSqlConstructorWindowOpen = false;
     private static int filtersCounter = 0;
     
     private RawSqlFilterConstructorWindow rawSqlFilterConstructorWindow;
     private ThreadsController threadsController = new ThreadsController();
-    private Connection connection;
     
     private DatabaseFilter databaseFilter = null;
     private String sqlQuery, filterName;
@@ -39,12 +37,7 @@ public class FilterConstructorWindowController extends Controller {
     private List<String> fromTables = new LinkedList<>();
     
     static void rawSqlConstructorWindowClosed() {
-        FilterConstructorWindowController.rawSqlConstructorWindowOpen = false;
-    }
-    
-    @FXML
-    public void initialize() {
-    
+        FilterConstructorController.rawSqlConstructorWindowOpen = false;
     }
     
     @Override
@@ -61,7 +54,6 @@ public class FilterConstructorWindowController extends Controller {
     
     @Override
     synchronized public void closeWindow() {
-        MainWindowController.filterConstructorWindowClosed();
         threadsController.killThreads();
         resultsReady = true;
         notifyAll();
@@ -78,7 +70,7 @@ public class FilterConstructorWindowController extends Controller {
         }
         
         try {
-            rawSqlFilterConstructorWindow = new RawSqlFilterConstructorWindow(connection);
+            rawSqlFilterConstructorWindow = new RawSqlFilterConstructorWindow();
             Thread rawSqlConstructorWorker = new Thread(this::waitForRawSqlFilter);
             threadsController.addThread(rawSqlConstructorWorker);
             rawSqlConstructorWorker.start();
@@ -109,22 +101,10 @@ public class FilterConstructorWindowController extends Controller {
         closeWindow();
     }
     
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-    
     private void waitForRawSqlFilter() {
-        try {
-            databaseFilter = (DatabaseFilter) rawSqlFilterConstructorWindow.getController().getResult();
-            
-            if (databaseFilter == null)
-                throw new FailedToCreateRawSqlFilter();
+        databaseFilter = (DatabaseFilter) rawSqlFilterConstructorWindow.getController().getResult();
     
-            Platform.runLater(() -> closeWindow());
-        }
-        catch (FailedToCreateRawSqlFilter e) {
-            MyAlerts.showWarningAlert("Błąd", "Nie udało się uworzyć filtru.",
-                    "Wystąpił błąd podczas tworzenia zaawansowanego filtru.", true);
-        }
+        if (databaseFilter != null)
+            Platform.runLater(this::closeWindow);
     }
 }

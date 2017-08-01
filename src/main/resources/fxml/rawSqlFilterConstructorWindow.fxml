@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.RawSQLFilterConstructorWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.gui.controllers.RawSQLFilterConstructorController">
    <children>
       <TextArea fx:id="sqlQueryArea" layoutX="24.0" layoutY="23.0" prefHeight="220.0" prefWidth="376.0" />
       <Button layoutX="306.0" layoutY="279.0" mnemonicParsing="false" onAction="#submitButtonClicked" prefHeight="25.0" prefWidth="86.0" text="Ok" />

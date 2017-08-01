@@ -72,7 +72,7 @@
               <items>
                 <AnchorPane minHeight="-Infinity" minWidth="0.0" prefHeight="23.0" prefWidth="100.0">
                      <children>
-                        <Label fx:id="logLabel" minHeight="-Infinity" prefHeight="21.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="logLabel" layoutX="4.0" minHeight="-Infinity" prefHeight="23.0" prefWidth="830.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="191.0">
@@ -106,7 +106,7 @@
             </AnchorPane>
           <AnchorPane minHeight="150.0" minWidth="168.0" prefHeight="218.0" prefWidth="168.0">
                <children>
-                  <ListView id="list-view" fx:id="filtersList" onContextMenuRequested="#showFiltersContextMenu" prefHeight="336.0" prefWidth="158.0" styleClass="focusable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <ListView id="list-view" fx:id="filtersList" prefHeight="336.0" prefWidth="158.0" styleClass="focusable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>

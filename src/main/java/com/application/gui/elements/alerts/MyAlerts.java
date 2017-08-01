@@ -15,43 +15,45 @@ public abstract class MyAlerts {
     private MyAlerts() { }
     
     public static void showExceptionAlert(String headerText, Exception e, boolean wait) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Wystąpił wyjątek");
-        alert.setHeaderText(headerText);
-        alert.setContentText(e.getMessage());
-        
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        String exceptionText = sw.toString();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wystąpił wyjątek");
+            alert.setHeaderText(headerText);
+            alert.setContentText(e.getMessage());
     
-        Label label = new Label("The exception stacktrace was:");
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String exceptionText = sw.toString();
     
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+            Label label = new Label("The exception stacktrace was:");
     
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
+            TextArea textArea = new TextArea(exceptionText);
+            textArea.setEditable(false);
+            textArea.setWrapText(true);
     
-        GridPane expContent = new GridPane();
-        expContent.setMaxWidth(Double.MAX_VALUE);
-        expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
-        
-        alert.getDialogPane().setExpandableContent(expContent);
+            textArea.setMaxWidth(Double.MAX_VALUE);
+            textArea.setMaxHeight(Double.MAX_VALUE);
+            GridPane.setVgrow(textArea, Priority.ALWAYS);
+            GridPane.setHgrow(textArea, Priority.ALWAYS);
     
-        showAndWait(alert, wait);
+            GridPane expContent = new GridPane();
+            expContent.setMaxWidth(Double.MAX_VALUE);
+            expContent.add(label, 0, 0);
+            expContent.add(textArea, 0, 1);
+    
+            alert.getDialogPane().setExpandableContent(expContent);
+    
+            showAndWait(alert, wait);
+        });
     }
     
     public static void showInfoAlert(String title, String header, String context, boolean wait) {
-        showAlert(Alert.AlertType.INFORMATION, title, header, context, wait);
+        Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, title, header, context, wait));
     }
     
     public static void showWarningAlert(String title, String header, String context, boolean wait) {
-        showAlert(Alert.AlertType.WARNING, title, header, context, wait);
+        Platform.runLater(() -> showAlert(Alert.AlertType.WARNING, title, header, context, wait));
     }
     
     private static void showAlert(Alert.AlertType type, String title, String header, String context, boolean wait) {
@@ -65,9 +67,9 @@ public abstract class MyAlerts {
     
     private static void showAndWait(Alert alert, boolean wait) {
         if (wait)
-            Platform.runLater(alert::showAndWait);
+            alert.showAndWait();
         else
-            Platform.runLater(alert::show);
+            alert.show();
     }
     
 }

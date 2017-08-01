@@ -1,16 +1,8 @@
 package com.application.gui.elements.loaders;
 
-import com.application.gui.abstracts.consts.values.ConstValues;
-import com.application.gui.abstracts.factories.LoggerFactory;
-import org.apache.maven.model.Model;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UserDataLoader {
     
@@ -18,7 +10,6 @@ public class UserDataLoader {
     
     private static DataLoader<Set<String>> hostsLoader, usersLoader;
     private static Set<String> savedHosts, savedUsers;
-    private static boolean dataLoaded = false;
     
     static {
         SAVED_HOSTS_NAME = "hostsNamesSet.dat";
@@ -32,26 +23,26 @@ public class UserDataLoader {
     }
     
     public void loadData() {
-        if (dataLoaded)
-            return;
-    
-        savedHosts = hostsLoader.loadData();
-        savedUsers = usersLoader.loadData();
+        hostsLoader.loadData();
+        usersLoader.loadData();
+        if (hostsLoader.getData() != null)
+            savedHosts = hostsLoader.getData();
         
-        dataLoaded = true;
+        if (usersLoader.getData() != null)
+            savedUsers = usersLoader.getData();
     }
     
     public void addNewData(String newHost, String newUser) {
-        if (newHost != null)
+        if (newHost != null && !savedHosts.contains(newHost))
             savedHosts.add(newHost);
         
-        if (newUser != null)
+        if (newUser != null && !savedUsers.contains(newUser))
             savedUsers.add(newUser);
     }
     
     public void saveData() {
         hostsLoader.saveData(savedHosts);
-        hostsLoader.saveData(savedUsers);
+        usersLoader.saveData(savedUsers);
     }
     
     public Set<String> getSavedHosts() {

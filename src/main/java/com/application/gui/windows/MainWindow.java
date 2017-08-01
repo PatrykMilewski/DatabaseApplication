@@ -19,7 +19,7 @@ public class MainWindow extends Application {
     private final URL fxmlUrl = getClass().getResource("/fxml/mainWindow.fxml");
     
     private MainWindowController controller;
-    private Stage stage;
+    public Stage stage;
     
     @Override
     public void start(Stage primaryStage) throws Exception {

@@ -26,7 +26,7 @@ public class LoginWindowController extends Controller {
     private static UserDataLoader userDataLoader = new UserDataLoader();
     
     private MySQLConnection databaseConnection;
-    private String baseAndServerName = "localhost:testowa", username = "test", password = "982563";
+    private String baseAndServerName, username, password;
     private Set<String> savedHosts, savedUsers;
     
     private boolean loginCancelled = false;
@@ -132,7 +132,6 @@ public class LoginWindowController extends Controller {
     
     @Override
     public synchronized void closeWindow() {
-        MainWindowController.loginWindowClosed();
         resultsReady = true;
         notifyAll();
         threadsController.killThreads();

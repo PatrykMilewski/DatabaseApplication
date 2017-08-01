@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class LoginWindow extends Window {
     public LoginWindow() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/loginWindow.fxml"));
-        Parent root = loader.load();
-        controller = loader.getController();
+        fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/loginWindow.fxml"));
+        Parent root = fxmlLoader.load();
+        controller = fxmlLoader.getController();
         stage = new Stage();
         stage.setTitle("");
         stage.initStyle(StageStyle.UNDECORATED);

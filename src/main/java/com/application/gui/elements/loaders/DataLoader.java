@@ -14,14 +14,14 @@ class DataLoader <E> {
     
     private static Logger log = LoggerFactory.getLogger(DataLoader.class.getCanonicalName());
     
-    private E data;
+    private E data = null;
     private String filePath;
     
     DataLoader(String filePath) {
         this.filePath = filePath;
     }
 
-    synchronized E loadData() {
+    synchronized void loadData() {
         
         String appData = System.getenv("APPDATA");
         String artifactId = ConstValues.getArtifactId(), version = ConstValues.getVersion();
@@ -44,8 +44,6 @@ class DataLoader <E> {
             log.log(Level.WARNING, "Failed to load saved data for path: " + dataPath + "a   .");
             log.log(Level.WARNING, e.getMessage(), e);
         }
-        
-        return data;
     }
     
     synchronized void saveData(final E data) {
@@ -76,5 +74,8 @@ class DataLoader <E> {
             }
         }
     }
-
+    
+    E getData() {
+        return data;
+    }
 }
