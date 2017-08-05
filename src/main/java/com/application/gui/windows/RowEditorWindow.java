@@ -24,7 +24,7 @@ public class RowEditorWindow extends Window {
         ((RowEditorController) controller).setDatabaseRow(databaseRow);
         ((RowEditorController) controller).loadColumnsList();
         stage.setTitle(windowName);
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.UNIFIED);
         setIcon();
         stage.setScene(new Scene(root));
         stage.setOnCloseRequest(event -> controller.closeWindow());

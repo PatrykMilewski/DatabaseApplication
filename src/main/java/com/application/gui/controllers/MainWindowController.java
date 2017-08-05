@@ -4,37 +4,29 @@ import com.application.database.sql.DataProcessor;
 import com.application.database.sql.DatabaseFilter;
 import com.application.database.sql.DatabaseRow;
 import com.application.database.tables.TableInfo;
-import com.application.database.tables.TableMetaData;
 import com.application.gui.abstracts.consts.enums.SpotStances;
 import com.application.gui.abstracts.consts.values.ConstValues;
 import com.application.gui.abstracts.exceptions.FailedToConnectToDatabase;
 import com.application.gui.abstracts.exceptions.IllegalOperationException;
 import com.application.gui.abstracts.factories.LoggerFactory;
 import com.application.gui.elements.containers.IconSpotsContainer;
-import com.application.gui.elements.contextmenus.Contextable;
 import com.application.gui.elements.controllers.ThreadsController;
-import com.application.gui.elements.contextmenus.DataTableContextMenu;
-import com.application.gui.elements.contextmenus.FiltersContextMenu;
 import com.application.gui.elements.infobox.LogBox;
 import com.application.gui.elements.loaders.FiltersDataLoader;
 import com.application.gui.windows.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.util.Pair;
 import org.codehaus.plexus.util.FileUtils;
 
 import javax.sql.rowset.CachedRowSet;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,7 +54,6 @@ public class MainWindowController extends Controller {
     private Map<String, TableInfo> tablesNames = new ConcurrentHashMap<>();
     
     private Connection databaseConnection = null;
-    private Contextable dataTableContextMenu, filtersContextMenu;
     
     private boolean connectedToDatabase = false;
     private int tabsCounter = 1;
@@ -97,8 +88,6 @@ public class MainWindowController extends Controller {
         resultsReady = true;
         logBox = new LogBox(logLabel);
         threadsController = new ThreadsController();
-        dataTableContextMenu = new DataTableContextMenu();
-        filtersContextMenu = new FiltersContextMenu();
         iconSpotsContainer = new IconSpotsContainer();
         filtersDataLoader = new FiltersDataLoader();
         
@@ -448,6 +437,9 @@ public class MainWindowController extends Controller {
             addLog(Level.INFO, "Pomyślnie zaktualizowano wartości " + updatedCells + " komórek.");
         else
             addLog(Level.SEVERE, "Nie udało się zakualizować rekordu.");
+        
+        if (windowsList.containsKey(RowEditorWindow.class))
+            windowsList.remove(RowEditorWindow.class);
     }
     
     //*****************************************************************************************************************/
